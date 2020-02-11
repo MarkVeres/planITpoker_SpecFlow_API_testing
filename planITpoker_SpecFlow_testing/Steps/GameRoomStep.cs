@@ -1,19 +1,18 @@
 ﻿using RestSharp;
 using System;
 using TechTalk.SpecFlow;
-using System.Linq;
 
 namespace planITpoker_SpecFlow_testing
 {
     [Binding]
-    public class GameStep
+    public class GameRoomStep
     {
         public int GameId { get; set; }
         public string GameCode { get; set; }
         private RestClient client;
         private string cookie;
 
-        public GameStep(int gameId, string gameCode, RestClient client, string cookie)
+        public GameRoomStep(int gameId, string gameCode, RestClient client, string cookie)
         {
             this.GameId = gameId;
             this.GameCode = gameCode;
@@ -22,7 +21,7 @@ namespace planITpoker_SpecFlow_testing
         }
 
         [When(@"I request Game Room information")]
-        public Room GetRoomInfo()
+        public Room WhenIRequestGameRoomInformation()
         {
             var body = $"gameId={GameId}&";
 

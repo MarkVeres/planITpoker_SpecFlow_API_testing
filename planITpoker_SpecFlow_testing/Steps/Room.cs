@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -12,9 +10,9 @@ namespace planITpoker_SpecFlow_testing
         public string title { get; set; }
 
         [Then(@"The Room name should be ""(.*)""")]
-        public void RoomName(string p0)
+        public void ThenTheRoomNameShouldBe(string roomTitle)
         {
-            Assert.Equal(p0, title);
+            Assert.Equal(roomTitle, title);
         }
     }
 }

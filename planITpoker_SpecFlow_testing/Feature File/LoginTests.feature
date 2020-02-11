@@ -1,7 +1,7 @@
 ﻿Feature: LoginTests
 
-@fact
-Scenario: QuickPlayLogin
+
+Scenario: User logs in via QuickPlay
 	Given I have logged in via QuickPlay as "John"
 	And I create a Game Room named "Test Room"
 	When I request Game Room information

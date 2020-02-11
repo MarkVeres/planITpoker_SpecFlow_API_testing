@@ -1,26 +1,26 @@
 ﻿using RestSharp;
 using System;
-using TechTalk.SpecFlow;
 using System.Linq;
-using Xunit;
+using TechTalk.SpecFlow;
+using BoDi;
 
-namespace planITpoker_SpecFlow_testing
+namespace planITpoker_SpecFlow_testing.Steps
 {
     [Binding]
     public class LoginStep
     {
         private const string baseUrl = "https://www.planitpoker.com";
-        private readonly RestClient client;
+        private RestClient client;
 
         public LoginStep()
         {
             client = new RestClient(baseUrl);
-        }
+        }        
 
         [Given(@"I have logged in via QuickPlay as ""(.*)""")]
-        public CreateRoomStep GivenIHaveLoggedInViaQuickPlay(string p0)
+        public CreateRoomStep GivenIHaveLoggedInViaQuickPlayAs(string userName)
         {
-            var body = $"name ={p0}";
+            var body = $"name={userName}";
             var request = new RestRequest("/api/authentication/anonymous", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");

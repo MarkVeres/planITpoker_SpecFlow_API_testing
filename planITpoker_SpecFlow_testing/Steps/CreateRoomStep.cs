@@ -1,7 +1,6 @@
 ﻿using RestSharp;
 using System;
 using TechTalk.SpecFlow;
-using System.Linq;
 
 namespace planITpoker_SpecFlow_testing
 {
@@ -18,9 +17,9 @@ namespace planITpoker_SpecFlow_testing
         }
 
         [Given(@"I create a Game Room named ""(.*)""")]
-        public GameStep CreateRoom(string p0)
+        public GameRoomStep GivenICreateAGameRoomNamed(string roomName)
         {
-            var body = $"name={p0}" +
+            var body = $"name={roomName}" +
                 $"&cardSetType=1" +
                 $"&haveStories=true" +
                 $"&confirmSkip=true" +
@@ -40,9 +39,9 @@ namespace planITpoker_SpecFlow_testing
             var response = client.Execute(request);
 
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameStep>(content);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoomStep>(content);
 
-            return new GameStep(deserializeObject.GameId, deserializeObject.GameCode, client, cookie);
+            return new GameRoomStep(deserializeObject.GameId, deserializeObject.GameCode, client, cookie);
         }
     }
 }
