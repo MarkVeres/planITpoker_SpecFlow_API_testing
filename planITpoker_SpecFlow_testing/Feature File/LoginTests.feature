@@ -1,8 +1,4 @@
 ﻿Feature: LoginTests
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
-
 
 Scenario: User login by Quick Play
 	Given I logged in by Quick Play as "John"

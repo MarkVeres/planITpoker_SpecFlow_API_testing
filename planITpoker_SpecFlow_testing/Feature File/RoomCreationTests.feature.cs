@@ -19,7 +19,7 @@ namespace planITpoker_SpecFlow_testing.FeatureFile
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class LoginTestsFeature : object, Xunit.IClassFixture<LoginTestsFeature.FixtureData>, System.IDisposable
+    public partial class RoomCreationTestsFeature : object, Xunit.IClassFixture<RoomCreationTestsFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace planITpoker_SpecFlow_testing.FeatureFile
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "LoginTests.feature"
+#line 1 "RoomCreationTests.feature"
 #line hidden
         
-        public LoginTestsFeature(LoginTestsFeature.FixtureData fixtureData, planITpoker_SpecFlow_testing_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public RoomCreationTestsFeature(RoomCreationTestsFeature.FixtureData fixtureData, planITpoker_SpecFlow_testing_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace planITpoker_SpecFlow_testing.FeatureFile
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LoginTests", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "RoomCreationTests", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,13 +80,13 @@ namespace planITpoker_SpecFlow_testing.FeatureFile
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="User login by Quick Play")]
-        [Xunit.TraitAttribute("FeatureTitle", "LoginTests")]
-        [Xunit.TraitAttribute("Description", "User login by Quick Play")]
-        public virtual void UserLoginByQuickPlay()
+        [Xunit.SkippableFactAttribute(DisplayName="Create a Game Room that cannot have stories")]
+        [Xunit.TraitAttribute("FeatureTitle", "RoomCreationTests")]
+        [Xunit.TraitAttribute("Description", "Create a Game Room that cannot have stories")]
+        public virtual void CreateAGameRoomThatCannotHaveStories()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User login by Quick Play", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a Game Room that cannot have stories", null, ((string[])(null)));
 #line 3
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -108,28 +108,31 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 4
- testRunner.Given("I logged in by Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I log in by Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 5
- testRunner.And("I created a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I create a Game Room named \"Test Room\" that cannot have stories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 6
- testRunner.When("I request Game Room information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I request information regarding the Game Room", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
- testRunner.Then("The name of the Game Room should be \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I should see that I am unable to add stories to the Game Room", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="User loggs in with valid credentials")]
-        [Xunit.TraitAttribute("FeatureTitle", "LoginTests")]
-        [Xunit.TraitAttribute("Description", "User loggs in with valid credentials")]
-        public virtual void UserLoggsInWithValidCredentials()
+        [Xunit.SkippableFactAttribute(DisplayName="Create a Game Room in which you can skip stories without having to give confirmat" +
+            "ion")]
+        [Xunit.TraitAttribute("FeatureTitle", "RoomCreationTests")]
+        [Xunit.TraitAttribute("Description", "Create a Game Room in which you can skip stories without having to give confirmat" +
+            "ion")]
+        public virtual void CreateAGameRoomInWhichYouCanSkipStoriesWithoutHavingToGiveConfirmation()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User loggs in with valid credentials", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a Game Room in which you can skip stories without having to give confirmat" +
+                    "ion", null, ((string[])(null)));
 #line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -151,28 +154,32 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 10
- testRunner.Given("I logged in using the following credentials \"ggg@gggmail.com\", \"password123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I log in by Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 11
- testRunner.And("I created a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I create a Game Room named \"Test Room\" in which skipping stories does not require" +
+                        " confirmation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
- testRunner.When("I request Game Room information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I request information regarding the Game Room", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 13
- testRunner.Then("The name of the Game Room should be \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I should see that I do not have to give confirmation for skipping stories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="User registers an account and loggs in")]
-        [Xunit.TraitAttribute("FeatureTitle", "LoginTests")]
-        [Xunit.TraitAttribute("Description", "User registers an account and loggs in")]
-        public virtual void UserRegistersAnAccountAndLoggsIn()
+        [Xunit.SkippableFactAttribute(DisplayName="Create a Game Room in which the Observer user cannot see the votes during the vot" +
+            "ing process")]
+        [Xunit.TraitAttribute("FeatureTitle", "RoomCreationTests")]
+        [Xunit.TraitAttribute("Description", "Create a Game Room in which the Observer user cannot see the votes during the vot" +
+            "ing process")]
+        public virtual void CreateAGameRoomInWhichTheObserverUserCannotSeeTheVotesDuringTheVotingProcess()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User registers an account and loggs in", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a Game Room in which the Observer user cannot see the votes during the vot" +
+                    "ing process", null, ((string[])(null)));
 #line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -194,17 +201,18 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 16
- testRunner.Given("I create an account using the following credentials \"gg@mail.com\", \"John\", \"passw" +
-                        "ord123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I log in by Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 17
- testRunner.And("I created a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I create a Game Room named \"Test Room\" in which the observer cannot see the votes" +
+                        " during the voting process", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 18
- testRunner.When("I request Game Room information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I request information regarding the Game Room", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
- testRunner.Then("The name of the Game Room should be \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I should see that the observer is unable to see the votes during the voting proce" +
+                        "ss", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -217,12 +225,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                LoginTestsFeature.FeatureSetup();
+                RoomCreationTestsFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                LoginTestsFeature.FeatureTearDown();
+                RoomCreationTestsFeature.FeatureTearDown();
             }
         }
     }
