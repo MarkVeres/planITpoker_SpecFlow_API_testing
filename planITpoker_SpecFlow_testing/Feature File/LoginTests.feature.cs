@@ -40,7 +40,8 @@ namespace planITpoker_SpecFlow_testing.FeatureFile
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LoginTests", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LoginTests", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
+                    "f two numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,14 +81,14 @@ namespace planITpoker_SpecFlow_testing.FeatureFile
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="User logs in via QuickPlay")]
+        [Xunit.SkippableFactAttribute(DisplayName="User login by Quick Play")]
         [Xunit.TraitAttribute("FeatureTitle", "LoginTests")]
-        [Xunit.TraitAttribute("Description", "User logs in via QuickPlay")]
-        public virtual void UserLogsInViaQuickPlay()
+        [Xunit.TraitAttribute("Description", "User login by Quick Play")]
+        public virtual void UserLoginByQuickPlay()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User logs in via QuickPlay", null, ((string[])(null)));
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User login by Quick Play", null, ((string[])(null)));
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -107,17 +108,104 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
- testRunner.Given("I have logged in via QuickPlay as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 8
+ testRunner.Given("I logged in by Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 6
- testRunner.And("I create a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 9
+ testRunner.And("I created a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 7
+#line 10
  testRunner.When("I request Game Room information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 8
- testRunner.Then("The Room name should be \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 11
+ testRunner.Then("The name of the Game Room should be \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="User loggs in with valid credentials")]
+        [Xunit.TraitAttribute("FeatureTitle", "LoginTests")]
+        [Xunit.TraitAttribute("Description", "User loggs in with valid credentials")]
+        public virtual void UserLoggsInWithValidCredentials()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User loggs in with valid credentials", null, ((string[])(null)));
+#line 13
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 14
+ testRunner.Given("I logged in using the following credentials \"ggg@gggmail.com\", \"password123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 15
+ testRunner.And("I created a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 16
+ testRunner.When("I request Game Room information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 17
+ testRunner.Then("The name of the Game Room should be \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="User registers an account and loggs in")]
+        [Xunit.TraitAttribute("FeatureTitle", "LoginTests")]
+        [Xunit.TraitAttribute("Description", "User registers an account and loggs in")]
+        public virtual void UserRegistersAnAccountAndLoggsIn()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User registers an account and loggs in", null, ((string[])(null)));
+#line 19
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 20
+ testRunner.Given("I create an account using the following credentials \"gg@mail.com\", \"John\", \"passw" +
+                        "ord123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 21
+ testRunner.And("I created a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
+ testRunner.When("I request Game Room information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 23
+ testRunner.Then("The name of the Game Room should be \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
