@@ -18,9 +18,11 @@ namespace planITpoker_SpecFlow_testing.Steps
         public bool haveStories { get; set; }   //does the room allow story creation?
         public bool confirmSkip { get; set; }   //do you have to confirm skipping stories?
         public bool showVotingToObservers { get; set; }   //can the observer see the votes?
-        public bool autoReveal { get; set; }  //automatically reveal the votes when voting finishes?
-        public bool changeVote { get; set; }   //allow players to change vote after they have voted?
-        public bool countdownTimer { get; set; }  //use a countdown timer?
+
+        //not yet implemented
+        //public bool autoReveal { get; set; }  //automatically reveal the votes when voting finishes?
+        //public bool changeVote { get; set; }   //allow players to change vote after they have voted?
+        //public bool countdownTimer { get; set; }  //use a countdown timer?
 
         [Given(@"I log in by Quick Play as ""(.*)""")]
         public void GivenILogInByQuickPlayAs(string userName)
