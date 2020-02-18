@@ -12,8 +12,8 @@ namespace planITpoker_SpecFlow_testing.Steps
         private const string baseUrl = "https://www.planitpoker.com";
         private readonly RestClient client = new RestClient(baseUrl);
         private string cookie;
-        public int GameId { get; set; }
-        public string GameCode { get; set; }
+        public int gameId { get; set; }
+        public string gameCode { get; set; }
 
         public bool haveStories { get; set; }   //does the room allow story creation?
         public bool confirmSkip { get; set; }   //do you have to confirm skipping stories?
@@ -64,8 +64,8 @@ namespace planITpoker_SpecFlow_testing.Steps
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
 
-            GameId = deserializeObject.GameId;
-            GameCode = deserializeObject.GameCode;
+            gameId = deserializeObject.gameId;
+            gameCode = deserializeObject.gameCode;
         }
 
         [Given(@"I create a Game Room named ""(.*)"" in which skipping stories does not require confirmation")]
@@ -93,8 +93,8 @@ namespace planITpoker_SpecFlow_testing.Steps
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
 
-            GameId = deserializeObject.GameId;
-            GameCode = deserializeObject.GameCode;
+            gameId = deserializeObject.gameId;
+            gameCode = deserializeObject.gameCode;
         }
 
         [Given(@"I create a Game Room named ""(.*)"" in which the observer cannot see the votes during the voting process")]
@@ -122,14 +122,14 @@ namespace planITpoker_SpecFlow_testing.Steps
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
 
-            GameId = deserializeObject.GameId;
-            GameCode = deserializeObject.GameCode;
+            gameId = deserializeObject.gameId;
+            gameCode = deserializeObject.gameCode;
         }
 
         [When(@"I request information regarding the Game Room")]
         public void WhenIRequestInformationRegardingTheGameRoom()
         {
-            var body = $"gameId={GameId}&";
+            var body = $"gameId={gameId}&";
 
             var request = new RestRequest("/api/play/getPlayInfo", Method.POST);
 

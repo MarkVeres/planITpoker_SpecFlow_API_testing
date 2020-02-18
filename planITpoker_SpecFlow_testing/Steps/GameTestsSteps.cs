@@ -62,8 +62,8 @@ namespace planITpoker_SpecFlow_testing.Steps
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
 
-            GameId = deserializeObject.GameId;
-            GameCode = deserializeObject.GameCode;
+            GameId = deserializeObject.gameId;
+            GameCode = deserializeObject.gameCode;
         }
         
         [Given(@"I create a story named ""(.*)""")]
