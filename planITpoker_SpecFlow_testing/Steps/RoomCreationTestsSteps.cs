@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using planITpoker_SpecFlow_testing.Context;
+using planITpoker_SpecFlow_testing.Methods;
+using RestSharp;
 using System;
 using System.Linq;
 using TechTalk.SpecFlow;
@@ -9,161 +11,160 @@ namespace planITpoker_SpecFlow_testing.Steps
     [Binding]
     public class RoomCreationTestsSteps
     {
+        public LoginContext loginContext;
         private const string baseUrl = "https://www.planitpoker.com";
         private readonly RestClient client = new RestClient(baseUrl);
-        private string cookie;
-        public int gameId { get; set; }
-        public string gameCode { get; set; }
+        public Room room;
 
-        public bool haveStories { get; set; }   //does the room allow story creation?
-        public bool confirmSkip { get; set; }   //do you have to confirm skipping stories?
-        public bool showVotingToObservers { get; set; }   //can the observer see the votes?
-
-        //not yet implemented
-        //public bool autoReveal { get; set; }  //automatically reveal the votes when voting finishes?
-        //public bool changeVote { get; set; }   //allow players to change vote after they have voted?
-        //public bool countdownTimer { get; set; }  //use a countdown timer?
+        public RoomCreationTestsSteps(LoginContext loginContext)
+        {
+            this.loginContext = loginContext;
+        }
 
         [Given(@"I log in by Quick Play as ""(.*)""")]
         public void GivenILogInByQuickPlayAs(string userName)
         {
-            var body = $"name={userName}";
-            var request = new RestRequest("/api/authentication/anonymous", Method.POST);
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-            var response = client.Execute(request);
-            cookie = response.Headers
-                .First(h => h.Name == "Set-Cookie")
-                .Value
-                .ToString();
+            var login = new Authentication(client, loginContext);
+            login.QuickPlayLogin(userName);
         }
         
         [Given(@"I create a Game Room named ""(.*)"" that cannot have stories")]
         public void GivenICreateAGameRoomNamedThatCannotHaveStories(string roomName)
         {
-            var body = $"name={roomName}" +
-                $"&cardSetType=1" +
-                $"&haveStories=false" +
-                $"&confirmSkip=true" +
-                $"&showVotingToObservers=true" +
-                $"&autoReveal=true" +
-                $"&changeVote=false" +
-                $"&countdownTimer=false" +
-                $"&countdownTimerValue=30";
-            var request = new RestRequest("/api/games/create/", Method.POST);
+            var room = new Games(loginContext, client);
+            room.CreateRoomHaveStories(roomName, false);
 
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
+            //var body = $"name={roomName}" +
+            //    $"&cardSetType=1" +
+            //    $"&haveStories=false" +
+            //    $"&confirmSkip=true" +
+            //    $"&showVotingToObservers=true" +
+            //    $"&autoReveal=true" +
+            //    $"&changeVote=false" +
+            //    $"&countdownTimer=false" +
+            //    $"&countdownTimerValue=30";
+            //var request = new RestRequest("/api/games/create/", Method.POST);
 
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+            //request.AddHeader("Content-Length", body.Length.ToString());
+            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            //request.AddHeader("Cookie", cookie);
 
-            var response = client.Execute(request);
+            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
+            //var response = client.Execute(request);
 
-            gameId = deserializeObject.gameId;
-            gameCode = deserializeObject.gameCode;
+            //var content = response.Content;
+            //var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
+
+            //gameId = deserializeObject.gameId;
+            //gameCode = deserializeObject.gameCode;
         }
 
         [Given(@"I create a Game Room named ""(.*)"" in which skipping stories does not require confirmation")]
         public void GivenICreateAGameRoomNamedInWhichSkippingStoriesDoesNotRequireConfirmation(string roomName)
         {
-            var body = $"name={roomName}" +
-                $"&cardSetType=1" +
-                $"&haveStories=true" +
-                $"&confirmSkip=false" +
-                $"&showVotingToObservers=true" +
-                $"&autoReveal=true" +
-                $"&changeVote=false" +
-                $"&countdownTimer=false" +
-                $"&countdownTimerValue=30";
-            var request = new RestRequest("/api/games/create/", Method.POST);
+            var room = new Games(loginContext, client);
+            room.CreateRoomSkipConfirmation(roomName, false);
 
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
+            //var body = $"name={roomName}" +
+            //    $"&cardSetType=1" +
+            //    $"&haveStories=true" +
+            //    $"&confirmSkip=false" +
+            //    $"&showVotingToObservers=true" +
+            //    $"&autoReveal=true" +
+            //    $"&changeVote=false" +
+            //    $"&countdownTimer=false" +
+            //    $"&countdownTimerValue=30";
+            //var request = new RestRequest("/api/games/create/", Method.POST);
 
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+            //request.AddHeader("Content-Length", body.Length.ToString());
+            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            //request.AddHeader("Cookie", cookie);
 
-            var response = client.Execute(request);
+            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
+            //var response = client.Execute(request);
 
-            gameId = deserializeObject.gameId;
-            gameCode = deserializeObject.gameCode;
+            //var content = response.Content;
+            //var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
+
+            //gameId = deserializeObject.gameId;
+            //gameCode = deserializeObject.gameCode;
         }
 
         [Given(@"I create a Game Room named ""(.*)"" in which the observer cannot see the votes during the voting process")]
         public void GivenICreateAGameRoomNamedInWhichTheObserverCannotSeeTheVotesDuringTheVotingProcess(string roomName)
         {
-            var body = $"name={roomName}" +
-                $"&cardSetType=1" +
-                $"&haveStories=true" +
-                $"&confirmSkip=true" +
-                $"&showVotingToObservers=false" +
-                $"&autoReveal=true" +
-                $"&changeVote=false" +
-                $"&countdownTimer=false" +
-                $"&countdownTimerValue=30";
-            var request = new RestRequest("/api/games/create/", Method.POST);
+            var room = new Games(loginContext, client);
+            room.CreateRoomObserverSeeingVotes(roomName, false);
 
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
+            //var body = $"name={roomName}" +
+            //    $"&cardSetType=1" +
+            //    $"&haveStories=true" +
+            //    $"&confirmSkip=true" +
+            //    $"&showVotingToObservers=false" +
+            //    $"&autoReveal=true" +
+            //    $"&changeVote=false" +
+            //    $"&countdownTimer=false" +
+            //    $"&countdownTimerValue=30";
+            //var request = new RestRequest("/api/games/create/", Method.POST);
 
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+            //request.AddHeader("Content-Length", body.Length.ToString());
+            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            //request.AddHeader("Cookie", cookie);
 
-            var response = client.Execute(request);
+            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
+            //var response = client.Execute(request);
 
-            gameId = deserializeObject.gameId;
-            gameCode = deserializeObject.gameCode;
+            //var content = response.Content;
+            //var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
+
+            //gameId = deserializeObject.gameId;
+            //gameCode = deserializeObject.gameCode;
         }
 
         [When(@"I request information regarding the Game Room")]
         public void WhenIRequestInformationRegardingTheGameRoom()
         {
-            var body = $"gameId={gameId}&";
+            var game = new Play(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            room = game.GetRoomInfo();
 
-            var request = new RestRequest("/api/play/getPlayInfo", Method.POST);
+            //var body = $"gameId={gameId}&";
 
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
+            //var request = new RestRequest("/api/play/getPlayInfo", Method.POST);
 
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+            //request.AddHeader("Content-Length", body.Length.ToString());
+            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            //request.AddHeader("Cookie", cookie);
 
-            var response = client.Execute(request);
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
+            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
-            haveStories = deserializeObject.haveStories;
-            confirmSkip = deserializeObject.confirmSkip;
-            showVotingToObservers = deserializeObject.showVotingToObservers;
+            //var response = client.Execute(request);
+            //var content = response.Content;
+            //var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
+
+            //haveStories = deserializeObject.haveStories;
+            //confirmSkip = deserializeObject.confirmSkip;
+            //showVotingToObservers = deserializeObject.showVotingToObservers;
         }
         
         [Then(@"I should see that I am unable to add stories to the Game Room")]
         public void ThenIShouldSeeThatIAmUnableToAddStoriesToTheGameRoom()
         {
-            Assert.False(haveStories);
+            room.CheckRoomCannotHaveStories();
         }
 
         [Then(@"I should see that I do not have to give confirmation for skipping stories")]
         public void ThenIShouldSeeThatIDoNotHaveToGiveConfirmationForSkippingStories()
         {
-            Assert.False(confirmSkip);
+            room.CheckRoomSkipNotNeedConfirmation();
         }
 
         [Then(@"I should see that the observer is unable to see the votes during the voting process")]
         public void ThenIShouldSeeThatTheObserverIsUnableToSeeTheVotesDuringTheVotingProcess()
         {
-            Assert.False(showVotingToObservers);
+            room.CheckRoomObserverCannotSeeVotes();
         }
     }
 }

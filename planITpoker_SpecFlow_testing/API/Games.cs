@@ -1,4 +1,5 @@
 ﻿using planITpoker_SpecFlow_testing.Context;
+using planITpoker_SpecFlow_testing.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -6,17 +7,19 @@ using System.Text;
 
 namespace planITpoker_SpecFlow_testing.Methods
 {
-    public class RoomMethods
+    public class Games
     {
         public LoginContext loginContext;
         private readonly string cookie;
         private readonly RestClient client;
+        public int GameId;
 
-        public RoomMethods(LoginContext loginContext, RestClient client)
+        public Games(LoginContext loginContext, RestClient client)
         {
             this.client = client;
             this.loginContext = loginContext;
             this.cookie = loginContext.cookie;
+            this.GameId = loginContext.gameId;
         }
 
         public void CreateRoom(string roomName)
@@ -41,14 +44,12 @@ namespace planITpoker_SpecFlow_testing.Methods
             var response = client.Execute(request);
 
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameMethods>(content);
-
-            loginContext.gameId = deserializeObject.gameId;
-            loginContext.gameCode = deserializeObject.gameCode;
-            //return new GameMethods(deserializeObject.gameId, deserializeObject.gameCode, client, cookie);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Play>(content);
+            loginContext.gameId = deserializeObject.GameId;
+            loginContext.gameCode = deserializeObject.GameCode;
         }
 
-        public GameMethods CreateRoomHaveStories(string roomName, bool tf)
+        public void CreateRoomHaveStories(string roomName, bool tf)
         {
             var body = $"name={roomName}" +
                 $"&cardSetType=1" +
@@ -70,12 +71,12 @@ namespace planITpoker_SpecFlow_testing.Methods
             var response = client.Execute(request);
 
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameMethods>(content);
-
-            return new GameMethods(deserializeObject.gameId, deserializeObject.gameCode, client, cookie);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Play>(content);
+            loginContext.gameId = deserializeObject.GameId;
+            loginContext.gameCode = deserializeObject.GameCode;
         }
 
-        public GameMethods CreateRoomSkipConfirmation(string roomName, bool tf)
+        public void CreateRoomSkipConfirmation(string roomName, bool tf)
         {
             var body = $"name={roomName}" +
                 $"&cardSetType=1" +
@@ -97,12 +98,12 @@ namespace planITpoker_SpecFlow_testing.Methods
             var response = client.Execute(request);
 
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameMethods>(content);
-
-            return new GameMethods(deserializeObject.gameId, deserializeObject.gameCode, client, cookie);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Play>(content);
+            loginContext.gameId = deserializeObject.GameId;
+            loginContext.gameCode = deserializeObject.GameCode;
         }
 
-        public GameMethods CreateRoomObserverSeeingVotes(string roomName, bool tf)
+        public void CreateRoomObserverSeeingVotes(string roomName, bool tf)
         {
             var body = $"name={roomName}" +
                 $"&cardSetType=1" +
@@ -124,12 +125,12 @@ namespace planITpoker_SpecFlow_testing.Methods
             var response = client.Execute(request);
 
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameMethods>(content);
-
-            return new GameMethods(deserializeObject.gameId, deserializeObject.gameCode, client, cookie);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Play>(content);
+            loginContext.gameId = deserializeObject.GameId;
+            loginContext.gameCode = deserializeObject.GameCode;
         }
 
-        public GameMethods CreateRoomAutoVoteReveal(string roomName, bool tf)
+        public void CreateRoomAutoVoteReveal(string roomName, bool tf)
         {
             var body = $"name={roomName}" +
                 $"&cardSetType=1" +
@@ -151,12 +152,12 @@ namespace planITpoker_SpecFlow_testing.Methods
             var response = client.Execute(request);
 
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameMethods>(content);
-
-            return new GameMethods(deserializeObject.gameId, deserializeObject.gameCode, client, cookie);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Play>(content);
+            loginContext.gameId = deserializeObject.GameId;
+            loginContext.gameCode = deserializeObject.GameCode;
         }
 
-        public GameMethods CreateRoomAllowChangeVote(string roomName, bool tf)
+        public void CreateRoomAllowChangeVote(string roomName, bool tf)
         {
             var body = $"name={roomName}" +
                 $"&cardSetType=1" +
@@ -178,12 +179,12 @@ namespace planITpoker_SpecFlow_testing.Methods
             var response = client.Execute(request);
 
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameMethods>(content);
-
-            return new GameMethods(deserializeObject.gameId, deserializeObject.gameCode, client, cookie);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Play>(content);
+            loginContext.gameId = deserializeObject.GameId;
+            loginContext.gameCode = deserializeObject.GameCode;
         }
 
-        public GameMethods UseCountDownTimer(string roomName, bool tf, int duration)
+        public void UseCountDownTimer(string roomName, bool tf, int duration)
         {
             var body = $"name={roomName}" +
                 $"&cardSetType=1" +
@@ -205,9 +206,45 @@ namespace planITpoker_SpecFlow_testing.Methods
             var response = client.Execute(request);
 
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameMethods>(content);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Play>(content);
+            loginContext.gameId = deserializeObject.GameId;
+            loginContext.gameCode = deserializeObject.GameCode;
+        }
 
-            return new GameMethods(deserializeObject.gameId, deserializeObject.gameCode, client, cookie);
+        public User GetPlayersAndStateInfo()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/getPlayersAndState/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
+
+            return deserializeObject;
+        }
+
+        public User GetVoteInformation()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/gameStoryVoteEvent", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
+
+            return deserializeObject;
         }
     }
 }

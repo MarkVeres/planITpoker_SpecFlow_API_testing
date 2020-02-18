@@ -1,4 +1,8 @@
-﻿using RestSharp;
+﻿using planITpoker_SpecFlow_testing.API;
+using planITpoker_SpecFlow_testing.Context;
+using planITpoker_SpecFlow_testing.Methods;
+using planITpoker_SpecFlow_testing.Models;
+using RestSharp;
 using System;
 using System.Linq;
 using TechTalk.SpecFlow;
@@ -9,209 +13,101 @@ namespace planITpoker_SpecFlow_testing.Steps
     [Binding]
     public class GameTestsSteps
     {
+        public LoginContext loginContext;
         private const string baseUrl = "https://www.planitpoker.com";
         private readonly RestClient client = new RestClient(baseUrl);
-        private string cookie;
-        public int GameId { get; set; }
-        public string GameCode { get; set; }
+        public Story story;
+        public Stories stories;
+        public Room room;
+        public User user;
 
-        public GameTestsSteps[] stories { get; set; }
-        public GameTestsSteps[] players { get; set; }
-        public string title { get; set; }
-        public bool moderatorConnected { get; set; }
-        public bool gameStarted { get; set; }
-        public bool voted { get; set; }
+        public GameTestsSteps(LoginContext loginContext)
+        {
+            this.loginContext = loginContext;
+        }
 
         [Given(@"I log in via Quick Play as ""(.*)""")]
         public void GivenILogInViaQuickPlayAs(string userName)
         {
-            var body = $"name={userName}";
-            var request = new RestRequest("/api/authentication/anonymous", Method.POST);
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-            var response = client.Execute(request);
-            cookie = response.Headers
-                .First(h => h.Name == "Set-Cookie")
-                .Value
-                .ToString();
+            var login = new Authentication(client, loginContext);
+            login.QuickPlayLogin(userName);
         }
         
         [Given(@"I create a Game Room named ""(.*)""")]
         public void GivenICreateAGameRoomNamed(string roomName)
         {
-            var body = $"name={roomName}" +
-                $"&cardSetType=1" +
-                $"&haveStories=false" +
-                $"&confirmSkip=true" +
-                $"&showVotingToObservers=true" +
-                $"&autoReveal=true" +
-                $"&changeVote=false" +
-                $"&countdownTimer=false" +
-                $"&countdownTimerValue=30";
-            var request = new RestRequest("/api/games/create/", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
-
-            GameId = deserializeObject.gameId;
-            GameCode = deserializeObject.gameCode;
+            var room = new Games(loginContext, client);
+            room.CreateRoom(roomName);
         }
         
         [Given(@"I create a story named ""(.*)""")]
         public void GivenICreateAStoryNamed(string storyName)
         {
-            var body = $"gameId={GameId}&" +
-                $"name={storyName}";
-
-            var request = new RestRequest("/api/stories/create/", Method.POST);
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
+            stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            stories.CreateStory(storyName);
         }
 
         [Given(@"I start the game")]
         public void GivenIStartTheGame()
         {
-            var body = $"gameId={GameId}&";
-
-            var request = new RestRequest("/api/stories/next/", Method.POST);
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
+            stories.StartGame();
         }
 
         [Given(@"I vote")]
         public void GivenIVote()
         {
-            var body = $"gameId={GameId}&" +
-                $"vote=2";
-
-            var request = new RestRequest("/api/stories/vote/", Method.POST);
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
+            stories.Vote();
         }
 
         [When(@"I request story information")]
         public void WhenIRequestStoryInformation()
         {
-            var body = $"gameId={GameId}&" +
-                $"page=1&" +
-                $"skip=0&" +
-                $"perPage=25&" +
-                $"status=0&";
-
-            var request = new RestRequest("/api/stories/get/", Method.POST);
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameTestsSteps>(content);
-
-            title = deserializeObject.stories[0].title;
+            story = stories.GetStoryInformation();
         }
 
         [When(@"I request Game information from getPlayInfo")]
         public void WhenIRequestGameInformationFromGetPlayInfo()
         {
-            var body = $"gameId={GameId}&";
-
-            var request = new RestRequest("/api/play/getPlayInfo", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameTestsSteps>(content);
-
-            moderatorConnected = deserializeObject.moderatorConnected;
+            var play = new Play(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            room = play.GetPlayInfo();
         }
 
         [When(@"I request Game information from getPlayersAndState")]
         public void WhenIRequestGameInformationFromGetPlayersAndState()
         {
-            var body = $"gameId={GameId}&";
-
-            var request = new RestRequest("/api/games/getPlayersAndState/", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameTestsSteps>(content);
-
-            gameStarted = deserializeObject.gameStarted;
+            var games = new Games(loginContext, client);
+            user = games.GetPlayersAndStateInfo();
         }
 
         [When(@"I request Vote information")]
         public void WhenIRequestVoteInformation()
         {
-            var body = $"gameId={GameId}&";
-
-            var request = new RestRequest("/api/games/gameStoryVoteEvent", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameTestsSteps>(content);
-
-            voted = deserializeObject.players[0].voted;
-
+            var games = new Games(loginContext, client);
+            user = games.GetVoteInformation();
         }
 
         [Then(@"I should see that the story is named ""(.*)""")]
         public void ThenIShouldSeeThatTheStoryIsNamed(string storyName)
         {
-            Assert.Equal(storyName, title);
+            Assert.Equal(storyName, story.stories[0].title);
         }
 
         [Then(@"I should see that the moderator is connected")]
         public void ThenIShouldSeeThatTheModeratorIsConnected()
         {
-            Assert.True(moderatorConnected);
+            Assert.True(room.moderatorConnected);
         }
 
         [Then(@"I should see that the game has started")]
         public void ThenIShouldSeeThatTheGameHasStarted()
         {
-            Assert.True(gameStarted);
+            Assert.True(user.gameStarted);
         }
 
         [Then(@"I should see that I have voted")]
         public void ThenIShouldSeeThatIHaveVoted()
         {
-            Assert.True(voted);
+            Assert.True(user.players[0].voted);
         }
     }
 }

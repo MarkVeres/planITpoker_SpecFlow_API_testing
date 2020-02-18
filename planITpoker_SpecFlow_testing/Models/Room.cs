@@ -20,5 +20,19 @@ namespace planITpoker_SpecFlow_testing.Methods
         {
             Assert.Equal(name, this.title);
         }
+
+        public void CheckRoomCannotHaveStories()
+        {
+            Assert.False(haveStories);
+        }
+
+        public void CheckRoomSkipNotNeedConfirmation()
+        {
+            Assert.False(confirmSkip);
+        }
+        public void CheckRoomObserverCannotSeeVotes()
+        {
+            Assert.False(showVotingToObservers);
+        }
     }
 }
