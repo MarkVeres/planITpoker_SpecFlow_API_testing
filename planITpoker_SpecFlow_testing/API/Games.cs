@@ -246,5 +246,36 @@ namespace planITpoker_SpecFlow_testing.Methods
 
             return deserializeObject;
         }
+
+        public CurrentStory GetCurrentStoryInfo()    //used for the NextStory Test Assert
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/getCurrentStory/", Method.POST);
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CurrentStory>(content);
+
+            return deserializeObject;
+        }
+
+        public void ClearVotes()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/resetCurrentStory/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+        }
     }
 }

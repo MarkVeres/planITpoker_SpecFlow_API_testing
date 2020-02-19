@@ -20,6 +20,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         public Stories stories;
         public Room room;
         public User user;
+        public CurrentStory currentStory;
 
         public GameTestsSteps(LoginContext loginContext)
         {
@@ -36,8 +37,8 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I create a Game Room named ""(.*)""")]
         public void GivenICreateAGameRoomNamed(string roomName)
         {
-            var room = new Games(loginContext, client);
-            room.CreateRoom(roomName);
+            var games = new Games(loginContext, client);
+            games.CreateRoom(roomName);
         }
         
         [Given(@"I create a story named ""(.*)""")]
@@ -45,6 +46,14 @@ namespace planITpoker_SpecFlow_testing.Steps
         {
             stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             stories.CreateStory(storyName);
+        }
+
+        [Given(@"I change the title of the story to ""(.*)""")]
+        public void GivenIChangeTheTitleOfTheStoryTo(string newTitle)
+        {
+            stories.GetStoryEditInfo();
+            stories.StoryDetails();
+            stories.UpdateStoryName(newTitle);
         }
 
         [Given(@"I start the game")]
@@ -59,10 +68,48 @@ namespace planITpoker_SpecFlow_testing.Steps
             stories.Vote();
         }
 
+        [Given(@"I clear the votes")]
+        public void GivenIClearTheVotes()
+        {
+            var games = new Games(loginContext, client);
+            games.ClearVotes();
+        }
+
+        [Given(@"I skip the current story")]
+        public void GivenISkipTheCurrentStory()
+        {
+            stories.SkipStory();
+        }
+
+        [Given(@"I proceed to the next story")]
+        public void GivenIProceedToTheNextStory()
+        {
+            stories.StartGame();
+        }
+
+        [Given(@"I Finish voting")]
+        public void GivenIFinishVoting()
+        {
+            stories.FinishVoting();
+        }
+
+        [Given(@"I reveal the cards")]
+        public void GivenIRevealTheCards()
+        {
+            stories.RevealCards();
+        }
+
         [When(@"I request story information")]
         public void WhenIRequestStoryInformation()
         {
             story = stories.GetStoryInformation();
+        }
+
+        [When(@"I request Current Story Information")]
+        public void WhenIRequestCurrentStoryInformation()
+        {
+            var games = new Games(loginContext, client);
+            currentStory = games.GetCurrentStoryInfo();
         }
 
         [When(@"I request Game information from getPlayInfo")]
@@ -108,6 +155,36 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void ThenIShouldSeeThatIHaveVoted()
         {
             Assert.True(user.players[0].voted);
+        }
+
+        [Then(@"I should see that the voting has finished")]
+        public void ThenIShouldSeeThatTheVotingHasFinished()
+        {
+            Assert.True(user.closed);
+        }
+
+        [Then(@"I Should see that the Current Story is named ""(.*)""")]
+        public void ThenIShouldSeeThatTheCurrentStoryIsNamed(string storyTitle)
+        {
+            Assert.Equal(storyTitle, currentStory.title);
+        }
+
+        [Then(@"I should see that my vote has been cleared")]
+        public void ThenIShouldSeeThatMyVoteHasBeenCleared()
+        {
+            Assert.False(user.players[0].voted);
+        }
+
+        [Then(@"I Should see that the vote values is (.*)")]
+        public void ThenIShouldSeeThatTheVoteValuesIs(int voteValue)
+        {
+            Assert.Equal(-1, user.players[0].vote);
+        }
+
+        [Then(@"I should see that the ""(.*)"" is in the story list")]
+        public void ThenIShouldSeeThatTheIsInTheStoryList(string storyName)
+        {
+            Assert.Equal(storyName, story.stories[1].title);
         }
     }
 }

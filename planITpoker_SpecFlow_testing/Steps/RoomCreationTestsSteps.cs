@@ -31,97 +31,43 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I create a Game Room named ""(.*)"" that cannot have stories")]
         public void GivenICreateAGameRoomNamedThatCannotHaveStories(string roomName)
         {
-            var room = new Games(loginContext, client);
-            room.CreateRoomHaveStories(roomName, false);
-
-            //var body = $"name={roomName}" +
-            //    $"&cardSetType=1" +
-            //    $"&haveStories=false" +
-            //    $"&confirmSkip=true" +
-            //    $"&showVotingToObservers=true" +
-            //    $"&autoReveal=true" +
-            //    $"&changeVote=false" +
-            //    $"&countdownTimer=false" +
-            //    $"&countdownTimerValue=30";
-            //var request = new RestRequest("/api/games/create/", Method.POST);
-
-            //request.AddHeader("Content-Length", body.Length.ToString());
-            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            //request.AddHeader("Cookie", cookie);
-
-            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            //var response = client.Execute(request);
-
-            //var content = response.Content;
-            //var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
-
-            //gameId = deserializeObject.gameId;
-            //gameCode = deserializeObject.gameCode;
+            var games = new Games(loginContext, client);
+            games.CreateRoomHaveStories(roomName, false);
         }
 
         [Given(@"I create a Game Room named ""(.*)"" in which skipping stories does not require confirmation")]
         public void GivenICreateAGameRoomNamedInWhichSkippingStoriesDoesNotRequireConfirmation(string roomName)
         {
-            var room = new Games(loginContext, client);
-            room.CreateRoomSkipConfirmation(roomName, false);
-
-            //var body = $"name={roomName}" +
-            //    $"&cardSetType=1" +
-            //    $"&haveStories=true" +
-            //    $"&confirmSkip=false" +
-            //    $"&showVotingToObservers=true" +
-            //    $"&autoReveal=true" +
-            //    $"&changeVote=false" +
-            //    $"&countdownTimer=false" +
-            //    $"&countdownTimerValue=30";
-            //var request = new RestRequest("/api/games/create/", Method.POST);
-
-            //request.AddHeader("Content-Length", body.Length.ToString());
-            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            //request.AddHeader("Cookie", cookie);
-
-            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            //var response = client.Execute(request);
-
-            //var content = response.Content;
-            //var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
-
-            //gameId = deserializeObject.gameId;
-            //gameCode = deserializeObject.gameCode;
+            var games = new Games(loginContext, client);
+            games.CreateRoomSkipConfirmation(roomName, false);
         }
 
         [Given(@"I create a Game Room named ""(.*)"" in which the observer cannot see the votes during the voting process")]
         public void GivenICreateAGameRoomNamedInWhichTheObserverCannotSeeTheVotesDuringTheVotingProcess(string roomName)
         {
-            var room = new Games(loginContext, client);
-            room.CreateRoomObserverSeeingVotes(roomName, false);
+            var games = new Games(loginContext, client);
+            games.CreateRoomObserverSeeingVotes(roomName, false);
+        }
 
-            //var body = $"name={roomName}" +
-            //    $"&cardSetType=1" +
-            //    $"&haveStories=true" +
-            //    $"&confirmSkip=true" +
-            //    $"&showVotingToObservers=false" +
-            //    $"&autoReveal=true" +
-            //    $"&changeVote=false" +
-            //    $"&countdownTimer=false" +
-            //    $"&countdownTimerValue=30";
-            //var request = new RestRequest("/api/games/create/", Method.POST);
+        [Given(@"I create a Game Room named ""(.*)"" that automatically reveals votes at the end of the voting process")]
+        public void GivenICreateAGameRoomNamedThatAutomaticallyRevealsVotesAtTheEndOfTheVotingProcess(string roomName)
+        {
+            var games = new Games(loginContext, client);
+            games.CreateRoomAutoVoteReveal(roomName, true);
+        }
 
-            //request.AddHeader("Content-Length", body.Length.ToString());
-            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            //request.AddHeader("Cookie", cookie);
+        [Given(@"I create a Game Room named ""(.*)"" in which changing votes is permitted")]
+        public void GivenICreateAGameRoomNamedInWhichChangingVotesIsPermitted(string roomName)
+        {
+            var games = new Games(loginContext, client);
+            games.CreateRoomAllowChangeVote(roomName, true);
+        }
 
-            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            //var response = client.Execute(request);
-
-            //var content = response.Content;
-            //var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
-
-            //gameId = deserializeObject.gameId;
-            //gameCode = deserializeObject.gameCode;
+        [Given(@"I create a Game Room named ""(.*)"" that uses a countdowntimer")]
+        public void GivenICreateAGameRoomNamedThatUsesACountdowntimer(string roomName)
+        {
+            var games = new Games(loginContext, client);
+            games.UseCountDownTimer(roomName, true, 30);
         }
 
         [When(@"I request information regarding the Game Room")]
@@ -129,42 +75,42 @@ namespace planITpoker_SpecFlow_testing.Steps
         {
             var game = new Play(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             room = game.GetRoomInfo();
-
-            //var body = $"gameId={gameId}&";
-
-            //var request = new RestRequest("/api/play/getPlayInfo", Method.POST);
-
-            //request.AddHeader("Content-Length", body.Length.ToString());
-            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            //request.AddHeader("Cookie", cookie);
-
-            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            //var response = client.Execute(request);
-            //var content = response.Content;
-            //var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<RoomCreationTestsSteps>(content);
-
-            //haveStories = deserializeObject.haveStories;
-            //confirmSkip = deserializeObject.confirmSkip;
-            //showVotingToObservers = deserializeObject.showVotingToObservers;
         }
         
         [Then(@"I should see that I am unable to add stories to the Game Room")]
         public void ThenIShouldSeeThatIAmUnableToAddStoriesToTheGameRoom()
         {
-            room.CheckRoomCannotHaveStories();
+            Assert.False(room.haveStories);
         }
 
         [Then(@"I should see that I do not have to give confirmation for skipping stories")]
         public void ThenIShouldSeeThatIDoNotHaveToGiveConfirmationForSkippingStories()
         {
-            room.CheckRoomSkipNotNeedConfirmation();
+            Assert.False(room.confirmSkip);
         }
 
         [Then(@"I should see that the observer is unable to see the votes during the voting process")]
         public void ThenIShouldSeeThatTheObserverIsUnableToSeeTheVotesDuringTheVotingProcess()
         {
-            room.CheckRoomObserverCannotSeeVotes();
+            Assert.False(room.showVotingToObservers);
+        }
+
+        [Then(@"I should see that the votes will be revealed automatically")]
+        public void ThenIShouldSeeThatTheVotesWillBeRevealedAutomatically()
+        {
+            Assert.True(room.autoReveal);
+        }
+
+        [Then(@"I should see that changing votes, after voting, is permitted")]
+        public void ThenIShouldSeeThatChangingVotesAfterVotingIsPermitted()
+        {
+            Assert.True(room.changeVote);
+        }
+
+        [Then(@"I should see that the Game Room has a countdowntimer")]
+        public void ThenIShouldSeeThatTheGameRoomHasACountdowntimer()
+        {
+            Assert.True(room.countdownTimer);
         }
     }
 }

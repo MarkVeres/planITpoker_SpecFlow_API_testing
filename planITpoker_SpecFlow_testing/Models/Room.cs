@@ -15,24 +15,5 @@ namespace planITpoker_SpecFlow_testing.Methods
         public bool changeVote { get; set; }   //allow players to change vote after they have voted?
         public bool countdownTimer { get; set; }  //use a countdown timer?
         public bool moderatorConnected { get; set; }   //is the moderator connected?
-
-        public void CheckRoomName(string name)
-        {
-            Assert.Equal(name, this.title);
-        }
-
-        public void CheckRoomCannotHaveStories()
-        {
-            Assert.False(haveStories);
-        }
-
-        public void CheckRoomSkipNotNeedConfirmation()
-        {
-            Assert.False(confirmSkip);
-        }
-        public void CheckRoomObserverCannotSeeVotes()
-        {
-            Assert.False(showVotingToObservers);
-        }
     }
 }

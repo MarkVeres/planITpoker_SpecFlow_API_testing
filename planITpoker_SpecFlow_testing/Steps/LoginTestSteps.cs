@@ -59,7 +59,7 @@ namespace planITpoker_SpecFlow_testing
         [Then(@"The name of the Game Room should be ""(.*)""")]
         public void ThenTheNameOfTheGameRoomShouldBe(string roomTitle)
         {
-            room.CheckRoomName(roomTitle);
+            Assert.Equal(roomTitle, room.title);
         }
     }
 }
