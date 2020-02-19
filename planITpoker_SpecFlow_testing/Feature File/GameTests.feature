@@ -1,6 +1,6 @@
 ﻿Feature: GameTests
 
-Scenario: User creates a story
+Scenario: Moderator creates a story
 	Given I log in via Quick Play as "John"
 	And I create a Game Room named "Test Room"
 	And I create a story named "Test Story"
