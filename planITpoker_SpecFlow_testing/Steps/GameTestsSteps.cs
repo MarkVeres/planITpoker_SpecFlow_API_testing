@@ -21,6 +21,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         public Room room;
         public User user;
         public CurrentStory currentStory;
+        private string initialTimer, secondTimer;
 
         public GameTestsSteps(LoginContext loginContext)
         {
@@ -52,7 +53,6 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void GivenIChangeTheTitleOfTheStoryTo(string newTitle)
         {
             stories.GetStoryEditInfo();
-            stories.StoryDetails();
             stories.UpdateStoryName(newTitle);
         }
 
@@ -97,6 +97,44 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void GivenIRevealTheCards()
         {
             stories.RevealCards();
+        }
+
+        [Given(@"I set the initial timer")]
+        public void GivenISetTheInitialTimer()
+        {
+            var games = new Games(loginContext, client);
+            var timer = games.GetCurrentStoryInfo();
+            initialTimer = timer.GetVotingStart();
+        }
+
+        [Given(@"I reset the Game Timer")]
+        public void GivenIResetTheGameTimer()
+        {
+            var games = new Games(loginContext, client);
+            games.ResetTimer();
+        }
+
+        [When(@"I set the second Timer")]
+        public void WhenISetTheSecondTimer()
+        {
+            var games = new Games(loginContext, client);
+            var timer = games.GetCurrentStoryInfo();
+            secondTimer = timer.GetVotingStart();
+        }
+
+        [Given(@"I delete a story")]
+        public void GivenIDeleteAStory()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            stories.GetStoryEditInfo();
+            stories.DeleteStory();
+        }
+
+        [When(@"I request information from getStoryState")]
+        public void WhenIRequestInformationFromGetStoryState()
+        {
+            var games = new Games(loginContext, client);
+            story = games.GetStoryState();
         }
 
         [When(@"I request story information")]
@@ -185,6 +223,18 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void ThenIShouldSeeThatTheIsInTheStoryList(string storyName)
         {
             Assert.Equal(storyName, story.stories[1].title);
+        }
+
+        [Then(@"I should see that the two timers are different")]
+        public void ThenIShouldSeeThatTheTwoTimersAreDifferent()
+        {
+            Assert.True(initialTimer != secondTimer);
+        }
+
+        [Then(@"I should see that there are no stories created")]
+        public void ThenIShouldSeeThatThereAreNoStoriesCreated()
+        {
+            Assert.False(story.storiesCreated);
         }
     }
 }

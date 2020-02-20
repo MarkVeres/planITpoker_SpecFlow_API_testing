@@ -149,12 +149,13 @@ namespace planITpoker_SpecFlow_testing.API
             id = deserializeObject.stories[0].id;
         }
 
-        public void StoryDetails()
+        public void UpdateStoryName(string newTitle)
         {
             var body = $"storyId={id}&" +
-                $"gameId={GameId}";
+                $"title={newTitle}&" +
+                $"estimate=5";
 
-            var request = new RestRequest("/api/stories/details/", Method.POST);
+            var request = new RestRequest("/api/stories/update/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -164,13 +165,12 @@ namespace planITpoker_SpecFlow_testing.API
             var response = client.Execute(request);
         }
 
-        public void UpdateStoryName(string newTitle)
+        public void DeleteStory()
         {
-            var body = $"storyId={id}&" +
-                $"title={newTitle}&" +
-                $"estimate=5";
+            var body = $"gameId={GameId}&" +
+                $"storyId={id}";
 
-            var request = new RestRequest("/api/stories/update/", Method.POST);
+            var request = new RestRequest("/api/stories/delete/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");

@@ -89,7 +89,7 @@ Scenario: Moderator clears votes after voting step ends
 	When I request Game information from getPlayersAndState
 	Then I should see that my vote has been cleared
 
-Scenario: Add a new story after voting ends on the first story
+Scenario: Moderator adds a new story after voting ends on the first story
 	Given I log in via Quick Play as "John"
 	And I create a Game Room named "Test Room"
 	And I create a story named "Test Story"
@@ -100,3 +100,22 @@ Scenario: Add a new story after voting ends on the first story
 	And I create a story named "Third Test Story"
 	When I request story information
 	Then I should see that the "Third Test Story" is in the story list
+
+Scenario: Moderator Resets the Game timer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I create a story named "Second Test Story"
+	And I start the game
+	And I set the initial timer
+	And I reset the Game Timer
+	When I set the second Timer
+	Then I should see that the two timers are different
+
+Scenario: Moderator deletes a story
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I delete a story
+	When I request information from getStoryState
+	Then I should see that there are no stories created

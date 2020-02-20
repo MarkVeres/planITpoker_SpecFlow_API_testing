@@ -277,5 +277,108 @@ namespace planITpoker_SpecFlow_testing.Methods
 
             var response = client.Execute(request);
         }
+
+        public void ResetGameRoom()
+        {
+            var body = $"gameId={GameId}";
+            var request = new RestRequest("/api/games/reset/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+        }
+
+        //this can be used to edit any setting after the room has been created
+        //just change method and body parameters
+        public void EditCreatedGameRoom(string roomName, bool tf, int duration)
+        {
+            var body = $"name={roomName}" +
+                $"&cardSetType=1" +
+                $"&haveStories=true" +
+                $"&confirmSkip=true" +
+                $"&showVotingToObservers=true" +
+                $"&autoReveal=true" +
+                $"&changeVote=false" +
+                $"&countdownTimer={tf}" +
+                $"&countdownTimerValue={duration}";
+            var request = new RestRequest("/api/games/create/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+        }
+
+        public void DeleteGameRoom()
+        {
+            var body = $"gameId={GameId}";
+            var request = new RestRequest("/api/games/create/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+        }
+
+        public List<ListRoom> GetGamesListInfo()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/getList/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ListRoom>>(content);
+
+            return deserializeObject;
+        }
+
+        public void ResetTimer()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/resetTimer", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+        }
+
+        public Story GetStoryState()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/getStoryState/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Story>(content);
+
+            return deserializeObject;
+        }
     }
 }
