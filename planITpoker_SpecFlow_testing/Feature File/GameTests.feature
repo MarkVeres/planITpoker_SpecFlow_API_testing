@@ -119,3 +119,24 @@ Scenario: Moderator deletes a story
 	And I delete a story
 	When I request information from getStoryState
 	Then I should see that there are no stories created
+
+Scenario: Moderator changes his estimate
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I start the game
+	And I vote
+	And I Finish voting
+	And I change my estimate
+	When I request story estimate information
+	Then I should see that my estimate has changed
+
+Scenario: Moderator generates a report of the Game
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I start the game
+	And I vote
+	And I Finish voting
+	When I generate a report of the Game
+	Then I should see the user name "John" and the story title "Test Story" within that report

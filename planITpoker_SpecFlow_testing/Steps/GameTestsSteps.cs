@@ -22,6 +22,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         public User user;
         public CurrentStory currentStory;
         private string initialTimer, secondTimer;
+        public string gameReport;
 
         public GameTestsSteps(LoginContext loginContext)
         {
@@ -130,6 +131,14 @@ namespace planITpoker_SpecFlow_testing.Steps
             stories.DeleteStory();
         }
 
+        [Given(@"I change my estimate")]
+        public void GivenIChangeMyEstimate()
+        {
+            var changeEstimate = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            changeEstimate.GetStoryEstimateEditInfo();
+            changeEstimate.UpdateStoryEstimate(5);
+        }
+
         [When(@"I request information from getStoryState")]
         public void WhenIRequestInformationFromGetStoryState()
         {
@@ -169,6 +178,20 @@ namespace planITpoker_SpecFlow_testing.Steps
         {
             var games = new Games(loginContext, client);
             user = games.GetVoteInformation();
+        }
+        [When(@"I request story estimate information")]
+        public void WhenIRequestStoryEstimateInformation()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            story = stories.GetStoryEstimateInfo();
+        }
+
+        [When(@"I generate a report of the Game")]
+        public void WhenIGenerateAReportOfTheGame()
+        {
+            var aux = new AuxiliaryAPIs(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            aux.ExportStories();
+            gameReport = aux.GetExportInfo();
         }
 
         [Then(@"I should see that the story is named ""(.*)""")]
@@ -235,6 +258,19 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void ThenIShouldSeeThatThereAreNoStoriesCreated()
         {
             Assert.False(story.storiesCreated);
+        }
+
+        [Then(@"I should see that my estimate has changed")]
+        public void ThenIShouldSeeThatMyEstimateHasChanged()
+        {
+            Assert.Equal(5, story.stories[0].estimate);
+        }
+
+        [Then(@"I should see the user name ""(.*)"" and the story title ""(.*)"" within that report")]
+        public void ThenIShouldSeeTheUserNameAndTheRoomNameWithinThatReport(string userName, string storyTitle)
+        {
+            Assert.Contains(userName, gameReport);
+            Assert.Contains(storyTitle, gameReport);
         }
     }
 }

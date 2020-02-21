@@ -128,7 +128,7 @@ namespace planITpoker_SpecFlow_testing.API
             return deserializeObject;
         }
 
-        public void GetStoryEditInfo()   //this method returns the storyId used for editing stories
+        public void GetStoryEditInfo()   //this method returns the storyId used for editing/deleting stories
         {
             var body = $"gameId={GameId}&" +
                 $"page=1&" +
@@ -149,11 +149,73 @@ namespace planITpoker_SpecFlow_testing.API
             id = deserializeObject.stories[0].id;
         }
 
+        public void GetStoryEstimateEditInfo()   //used specifically for changing estimates
+        {
+            var body = $"gameId={GameId}&" +
+                $"page=1&" +
+                $"skip=0&" +
+                $"perPage=25&" +
+                $"sortingKey=votingStart&" +
+                $"reverse=true";
+
+            var request = new RestRequest("/api/stories/get/", Method.POST);
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Story>(content);
+
+            id = deserializeObject.stories[0].id;
+        }
+
+        public Story GetStoryEstimateInfo()  //only this API returns correct information after estimate change!
+        {
+            var body = $"gameId={GameId}&" +
+                $"page=1&" +
+                $"skip=0&" +
+                $"perPage=25&" +
+                $"sortingKey=votingStart&" +
+                $"reverse=true";
+
+            var request = new RestRequest("/api/stories/get/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Story>(content);
+
+            return deserializeObject;
+        }
+
         public void UpdateStoryName(string newTitle)
         {
             var body = $"storyId={id}&" +
                 $"title={newTitle}&" +
                 $"estimate=5";
+
+            var request = new RestRequest("/api/stories/update/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+        }
+
+        public void UpdateStoryEstimate(int num)
+        {
+            var body = $"storyId={id}&" +
+                $"title=Test Story&" +
+                $"estimate={num}";
 
             var request = new RestRequest("/api/stories/update/", Method.POST);
 
