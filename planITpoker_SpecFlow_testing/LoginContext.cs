@@ -9,6 +9,7 @@ namespace planITpoker_SpecFlow_testing.Context
     public class LoginContext
     {
         public string cookie { get; set; }
+        public string secondUserCookie { get; set; }
         public int gameId { get; set; }
         public string gameCode { get; set; }
     }

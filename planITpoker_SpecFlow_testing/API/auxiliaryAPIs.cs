@@ -48,7 +48,7 @@ namespace planITpoker_SpecFlow_testing.API
 
             var request = new RestRequest(adress, Method.GET);
 
-            //request.AddHeader("Cookie", secondUserCookie);
+            request.AddHeader("Cookie", cookie);
 
             IRestResponse response = client.Execute(request);
         }
