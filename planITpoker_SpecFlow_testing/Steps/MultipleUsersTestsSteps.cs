@@ -16,6 +16,10 @@ namespace planITpoker_SpecFlow_testing.Steps
         private const string baseUrl = "https://www.planitpoker.com";
         private readonly RestClient client = new RestClient(baseUrl);
         public User user;
+        public Story story;
+        public Room room;
+        public CurrentStory currentStory;
+        private string initialTimer, secondTimer;
 
         public MultipleUsersTestsSteps(LoginContext loginContext)
         {
@@ -31,17 +35,184 @@ namespace planITpoker_SpecFlow_testing.Steps
             aux.GetInGameRoom();
         }
 
-        [When(@"I ask for players information from getPlayersAndState")]
+        [Given(@"Jack creates a story named ""(.*)""")]
+        public void GivenJackCreatesAStory(string storyTitle)
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
+            stories.CreateStory(storyTitle);
+        }
+
+        [Given(@"Jack tries to start the game")]
+        public void GivenJackTriesToStartTheGame()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
+            stories.StartGame();
+        }
+
+        [Given(@"Jack votes")]
+        public void GivenJackVotes()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
+            stories.Vote();
+        }
+
+        [Given(@"Jack tries to skip the current story")]
+        public void GivenJackTriesToSkipTheCurrentStory()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
+            stories.SkipStory();
+            stories.StartGame();
+        }
+
+        [Given(@"I start the game and set the initial timer")]
+        public void GivenIStartTheGameAndSetTheInitialTimer()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            stories.StartGame();
+            var games = new Games(loginContext, client, loginContext.cookie);
+            var timer = games.GetCurrentStoryInfo();
+            initialTimer = timer.GetVotingStart();
+        }
+
+        [Given(@"Jack tries to reset the in-game timer")]
+        public void GivenJackTriesToResetTheIn_GameTimer()
+        {
+            var games = new Games(loginContext, client, loginContext.secondUserCookie);
+            games.ResetTimer();
+        }
+
+        [Given(@"Jack tries to reveal the cards")]
+        public void GivenJackTriesToRevealTheCards()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
+            stories.RevealCards();
+        }
+
+        [Given(@"Jack tries to clear the votes")]
+        public void GivenJackTriesToClearTheVotes()
+        {
+            var games = new Games(loginContext, client, loginContext.secondUserCookie);
+            games.ClearVotes();            
+        }
+
+        [Given(@"Jack tries to end the voting process")]
+        public void GivenJackTriesToEndTheVotingProcess()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
+            stories.FinishVoting();
+        }
+
+        [Given(@"Jack tries to change the title of the story to ""(.*)""")]
+        public void GivenJackTriesToChangeTheTitleOfTheStoryTo(string newStoryTitle)
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
+            stories.GetStoryEditInfo();
+            stories.UpdateStoryName(newStoryTitle);
+        }
+
+        [When(@"I set the second timer")]
+        public void WhenISetTheSecondTimer()
+        {
+            var games = new Games(loginContext, client, loginContext.cookie);
+            var timer = games.GetCurrentStoryInfo();
+            secondTimer = timer.GetVotingStart();
+        }
+
+        [When(@"I ask for information from getPlayersAndState")]
         public void WhenIAskForPlayersInformationFromGetPlayersAndState()
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             user = games.GetPlayersAndStateInfo();
+        }
+
+        [When(@"I ask for Story information")]
+        public void WhenIAskForStoryInformation()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            story = stories.GetStoryInformation();
+        }
+
+        [When(@"I request Room information from GetPlayInfo")]
+        public void WhenIRequestRoomInformation()
+        {
+            var play = new Play(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            room = play.GetPlayInfo();
+        }
+
+        [When(@"I request Vote information from GetVoteInfo")]
+        public void WhenIRequestVoteInformationFromGetVoteInfo()
+        {
+            var games = new Games(loginContext, client, loginContext.cookie);
+            user = games.GetVoteInformation();
+        }
+
+        [When(@"I request information about the current story")]
+        public void WhenIRequestInformationAboutTheCurrentStory()
+        {
+            var games = new Games(loginContext, client, loginContext.cookie);
+            currentStory = games.GetCurrentStoryInfo();
         }
 
         [Then(@"I should see that the second user's name is ""(.*)""")]
         public void ThenIShouldSeeThatTheSecondUserSNameIs(string userName)
         {
             Assert.Equal(userName, user.players[1].name);
+        }
+
+        [Then(@"i should see that Jack could not create a story, as there is only (.*) story created")]
+        public void ThenIShouldSeeThatJackCouldNotCreateAStoryAsThereIsOnlyStoryCreated(int storyNumber)
+        {
+            Assert.Equal(storyNumber, story.storiesCount);
+        }
+
+        [Then(@"I Should see that Jack was unable to start the game")]
+        public void ThenIShouldSeeThatJackWasUnableToStartTheGame()
+        {
+            Assert.False(room.gameStarted);
+        }
+
+        [Then(@"I should see that Jack has voted")]
+        public void ThenIShouldSeeThatJackHasVoted()
+        {
+            Assert.True(user.players[1].voted);
+        }
+
+        [Then(@"I should see that the current story is still ""(.*)""")]
+        public void ThenIShouldSeeThatTheCurrentStoryIsStill(string storyTitle)
+        {
+            Assert.Equal(storyTitle, currentStory.title);
+        }
+
+        [Then(@"I should see that Jack could not reset the timer, because the two timers are identical")]
+        public void ThenIShouldSeeThatJackCouldNotResetTheTimerBecauseTheTwoTimersAreIdentical()
+        {
+            Assert.True(initialTimer == secondTimer);
+        }
+
+        [Then(@"I should see that my vote is null")]
+        public void ThenIShouldSeeThatMyVoteIsNull()   //BUG FOUND!
+        {
+            Assert.Null(user.players[0].vote);
+            //since that the first user did not vote; normally his "vote" value should have been null
+            //actual vote value is "-1" that means that the second user was able to reveal the cards
+        }
+
+        [Then(@"I Should see that my vote has not been cleared")]
+        public void ThenIShouldSeeThatMyVoteHasNotBeenCleared()
+        {
+            Assert.True(user.players[0].voted);
+        }
+
+        [Then(@"I should see that the voting process has not ended")]
+        public void ThenIShouldSeeThatTheVotingProcessHasNotEnded()
+        {
+            Assert.False(user.closed);
+        }
+
+        [Then(@"I should see that the story name is still ""(.*)""")]
+        public void ThenIShouldSeeThatTheStoryNameIsStill(string storyTitle)
+        {
+            Assert.Equal(storyTitle, story.stories[0].title);
         }
     }
 }

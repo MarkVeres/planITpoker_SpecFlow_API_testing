@@ -14,11 +14,11 @@ namespace planITpoker_SpecFlow_testing.Methods
         private readonly RestClient client;
         public int GameId;
 
-        public Games(LoginContext loginContext, RestClient client)
+        public Games(LoginContext loginContext, RestClient client, string cookie)
         {
             this.client = client;
             this.loginContext = loginContext;
-            this.cookie = loginContext.cookie;
+            this.cookie = cookie;
             this.GameId = loginContext.gameId;
         }
 

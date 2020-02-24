@@ -39,7 +39,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I create a Game Room named ""(.*)""")]
         public void GivenICreateAGameRoomNamed(string roomName)
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             games.CreateRoom(roomName);
         }
         
@@ -51,10 +51,10 @@ namespace planITpoker_SpecFlow_testing.Steps
         }
 
         [Given(@"I change the title of the story to ""(.*)""")]
-        public void GivenIChangeTheTitleOfTheStoryTo(string newTitle)
+        public void GivenIChangeTheTitleOfTheStoryTo(string newStoryTitle)
         {
             stories.GetStoryEditInfo();
-            stories.UpdateStoryName(newTitle);
+            stories.UpdateStoryName(newStoryTitle);
         }
 
         [Given(@"I start the game")]
@@ -72,7 +72,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I clear the votes")]
         public void GivenIClearTheVotes()
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             games.ClearVotes();
         }
 
@@ -80,11 +80,6 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void GivenISkipTheCurrentStory()
         {
             stories.SkipStory();
-        }
-
-        [Given(@"I proceed to the next story")]
-        public void GivenIProceedToTheNextStory()
-        {
             stories.StartGame();
         }
 
@@ -103,7 +98,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I set the initial timer")]
         public void GivenISetTheInitialTimer()
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             var timer = games.GetCurrentStoryInfo();
             initialTimer = timer.GetVotingStart();
         }
@@ -111,14 +106,14 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I reset the Game Timer")]
         public void GivenIResetTheGameTimer()
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             games.ResetTimer();
         }
 
         [When(@"I set the second Timer")]
         public void WhenISetTheSecondTimer()
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             var timer = games.GetCurrentStoryInfo();
             secondTimer = timer.GetVotingStart();
         }
@@ -142,7 +137,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         [When(@"I request information from getStoryState")]
         public void WhenIRequestInformationFromGetStoryState()
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             story = games.GetStoryState();
         }
 
@@ -155,7 +150,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         [When(@"I request Current Story Information")]
         public void WhenIRequestCurrentStoryInformation()
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             currentStory = games.GetCurrentStoryInfo();
         }
 
@@ -169,14 +164,14 @@ namespace planITpoker_SpecFlow_testing.Steps
         [When(@"I request Game information from getPlayersAndState")]
         public void WhenIRequestGameInformationFromGetPlayersAndState()
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             user = games.GetPlayersAndStateInfo();
         }
 
         [When(@"I request Vote information")]
         public void WhenIRequestVoteInformation()
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             user = games.GetVoteInformation();
         }
         [When(@"I request story estimate information")]

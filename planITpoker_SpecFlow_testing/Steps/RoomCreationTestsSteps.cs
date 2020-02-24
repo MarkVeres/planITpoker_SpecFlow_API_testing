@@ -34,63 +34,63 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I create a Game Room named ""(.*)"" that cannot have stories")]
         public void GivenICreateAGameRoomNamedThatCannotHaveStories(string roomName)
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             games.CreateRoomHaveStories(roomName, false);
         }
 
         [Given(@"I create a Game Room named ""(.*)"" in which skipping stories does not require confirmation")]
         public void GivenICreateAGameRoomNamedInWhichSkippingStoriesDoesNotRequireConfirmation(string roomName)
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             games.CreateRoomSkipConfirmation(roomName, false);
         }
 
         [Given(@"I create a Game Room named ""(.*)"" in which the observer cannot see the votes during the voting process")]
         public void GivenICreateAGameRoomNamedInWhichTheObserverCannotSeeTheVotesDuringTheVotingProcess(string roomName)
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             games.CreateRoomObserverSeeingVotes(roomName, false);
         }
 
         [Given(@"I create a Game Room named ""(.*)"" that automatically reveals votes at the end of the voting process")]
         public void GivenICreateAGameRoomNamedThatAutomaticallyRevealsVotesAtTheEndOfTheVotingProcess(string roomName)
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             games.CreateRoomAutoVoteReveal(roomName, true);
         }
 
         [Given(@"I create a Game Room named ""(.*)"" in which changing votes is permitted")]
         public void GivenICreateAGameRoomNamedInWhichChangingVotesIsPermitted(string roomName)
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             games.CreateRoomAllowChangeVote(roomName, true);
         }
 
         [Given(@"I create a Game Room named ""(.*)"" that uses a countdowntimer")]
         public void GivenICreateAGameRoomNamedThatUsesACountdowntimer(string roomName)
         {
-            var games = new Games(loginContext, client);
+            var games = new Games(loginContext, client, loginContext.cookie);
             games.UseCountDownTimer(roomName, true, 30);
         }
 
         [Given(@"I reset the Game Room")]
         public void GivenIResetTheGameRoom()
         {
-            var reset = new Games(loginContext, client);
+            var reset = new Games(loginContext, client, loginContext.cookie);
             reset.ResetGameRoom();
         }
 
         [Given(@"I modify Game Room setting by adding a countdown timer")]
         public void GivenIModifyGameRoomSettingByAddingACountdownTimer()
         {
-            var modify = new Games(loginContext, client);
+            var modify = new Games(loginContext, client, loginContext.cookie);
             modify.EditCreatedGameRoom("Test Room", true, 30);
         }
 
         [Given(@"I delete the Game Room")]
         public void GivenIDeleteTheGameRoom()
         {
-            var delete = new Games(loginContext, client);
+            var delete = new Games(loginContext, client, loginContext.cookie);
             delete.DeleteGameRoom();
         }
 
@@ -105,7 +105,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         [When(@"I request Room List information")]
         public void WhenIRequestRoomListInformation()
         {
-            var list = new Games(loginContext, client);
+            var list = new Games(loginContext, client, loginContext.cookie);
             listRoom = list.GetGamesListInfo();
         }
 

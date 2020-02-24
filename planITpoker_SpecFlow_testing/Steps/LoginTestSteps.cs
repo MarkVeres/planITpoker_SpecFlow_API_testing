@@ -45,7 +45,7 @@ namespace planITpoker_SpecFlow_testing
         [Given(@"I created a Game Room named ""(.*)""")]
         public void GivenICreatedAGameRoomNamed(string roomName)
         {
-            var room = new Games(loginContext, client);
+            var room = new Games(loginContext, client, loginContext.cookie);
             room.CreateRoom(roomName);
         }
         

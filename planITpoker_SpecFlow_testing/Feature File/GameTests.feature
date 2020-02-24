@@ -45,7 +45,6 @@ Scenario: Moderator skips a story
 	And I create a story named "Second Test Story"
 	And I start the game
 	And I skip the current story
-	And I proceed to the next story
 	When I request Current Story Information
 	Then I Should see that the Current Story is named "Second Test Story"
 

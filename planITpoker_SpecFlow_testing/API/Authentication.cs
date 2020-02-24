@@ -32,7 +32,7 @@ namespace planITpoker_SpecFlow_testing.Methods
                 .ToString();
 
             loginContext.cookie = cookie;
-            return new Games(loginContext, client);
+            return new Games(loginContext, client, loginContext.cookie);
         }
 
         public void SecondUserQuickPlayLogin(string userName)
@@ -68,7 +68,7 @@ namespace planITpoker_SpecFlow_testing.Methods
                 .ToString();
 
             loginContext.cookie = cookie;
-            return new Games(loginContext, client);
+            return new Games(loginContext, client, loginContext.cookie);
         }
 
         public Games LoginLogin(string email, string password)
@@ -87,7 +87,7 @@ namespace planITpoker_SpecFlow_testing.Methods
                 .ToString();
 
             loginContext.cookie = cookie;
-            return new Games(loginContext, client);
+            return new Games(loginContext, client, loginContext.cookie);
         }
     }
 }
