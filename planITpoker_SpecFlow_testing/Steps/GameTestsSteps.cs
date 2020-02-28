@@ -60,12 +60,14 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I start the game")]
         public void GivenIStartTheGame()
         {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             stories.StartGame();
         }
 
         [Given(@"I vote")]
         public void GivenIVote()
         {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             stories.Vote();
         }
 
@@ -174,6 +176,7 @@ namespace planITpoker_SpecFlow_testing.Steps
             var games = new Games(loginContext, client, loginContext.cookie);
             user = games.GetVoteInformation();
         }
+
         [When(@"I request story estimate information")]
         public void WhenIRequestStoryEstimateInformation()
         {
@@ -187,6 +190,13 @@ namespace planITpoker_SpecFlow_testing.Steps
             var aux = new AuxiliaryAPIs(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             aux.ExportStories();
             gameReport = aux.GetExportInfo();
+        }
+
+        [When(@"I request player information from getPlayInfo")]
+        public void WhenIRequestPlayerInformationFromGetPlayInfo()
+        {
+            var play = new Play(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            user = play.GetPlayerInfo();
         }
 
         [Then(@"I should see that the story is named ""(.*)""")]
@@ -213,7 +223,7 @@ namespace planITpoker_SpecFlow_testing.Steps
             Assert.True(user.players[0].voted);
         }
 
-        [Then(@"I should see that the voting has finished")]
+        [Then(@"I should see that the voting step has ended")]
         public void ThenIShouldSeeThatTheVotingHasFinished()
         {
             Assert.True(user.closed);
@@ -266,6 +276,38 @@ namespace planITpoker_SpecFlow_testing.Steps
         {
             Assert.Contains(userName, gameReport);
             Assert.Contains(storyTitle, gameReport);
+        }
+
+        [Then(@"I should see that the game has not started")]
+        public void ThenIShouldSeeThatTheGameHasNotStarted()
+        {
+            Assert.False(room.gameStarted);
+        }
+
+        [Then(@"I should see that there are no votes submitted")]
+        public void ThenIShouldSeeThatIHaveNotVoted()
+        {
+            Assert.Null(room.votes);
+        }
+
+        [Then(@"I should see that there are no stories in this room")]
+        public void ThenIShouldSeeThatThereAreNoStoriesInThisRoom()
+        {
+            //BUG FOUND! 
+            //Assert.False(room.haveStories);   //this assert passes which means the room does not allow story creation
+            Assert.False(room.storiesCreated);  //however, it seems that through API calls, a moderator can add stories even though the room does not allow it    
+        }
+
+        [Then(@"I should see that my vote is still null")]
+        public void ThenIShouldSeeThatMyVoteIsStillNull()
+        {
+            Assert.Null(user.players[0].vote);
+        }
+
+        [Then(@"I should see that the voting had not been ended")]
+        public void ThenIShouldSeeThatTheVotingHadNotBeenEnded()
+        {
+            Assert.False(user.closed);
         }
     }
 }

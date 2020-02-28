@@ -16,5 +16,7 @@ namespace planITpoker_SpecFlow_testing.Methods
         public bool countdownTimer { get; set; }  //use a countdown timer?
         public bool moderatorConnected { get; set; }   //is the moderator connected?
         public bool gameStarted { get; set; }
+        public int? votes { get; set; }   //are there any votes submitted?
+        public bool storiesCreated { get; set; }
     }
 }

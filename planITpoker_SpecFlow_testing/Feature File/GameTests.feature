@@ -56,7 +56,7 @@ Scenario: Moderator ends the voting process
 	And I vote
 	And I Finish voting
 	When I request Game information from getPlayersAndState
-	Then I should see that the voting has finished
+	Then I should see that the voting step has ended
 
 Scenario: Moderator Reveals cards
 	Given I log in via Quick Play as "John"
@@ -139,3 +139,50 @@ Scenario: Moderator generates a report of the Game
 	And I Finish voting
 	When I generate a report of the Game
 	Then I should see the user name "John" and the story title "Test Story" within that report
+
+Scenario: Moderator starts the game with no stories created
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I start the game
+	When I request Game information from getPlayInfo
+	Then I should see that the game has not started
+
+Scenario: Moderator tries to vote before the game has started
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I vote
+	When I request Game information from getPlayInfo
+	Then I should see that there are no votes submitted
+
+Scenario: Moderator tries to create a story in a room that does not allow story creation
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room" that cannot have stories
+	And I create a story named "Test Story"
+	When I request Game information from getPlayInfo
+	Then I should see that there are no stories in this room
+
+Scenario: Moderator tries to skip stories before the game starts
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I create a story named "Second Test Story"
+	And I skip the current story
+	When I request Current Story Information
+	Then I Should see that the Current Story is named "Test Story"
+
+Scenario: Moderator tries to reveal votes before games starts
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I reveal the cards	
+	When I request player information from getPlayInfo
+	Then I should see that my vote is still null
+
+Scenario: Moderator tries to end the voting process before the game starts
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I Finish voting
+	When I request Game information from getPlayersAndState
+	Then I should see that the voting had not been ended
