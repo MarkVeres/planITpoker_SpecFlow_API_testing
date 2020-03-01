@@ -13,7 +13,7 @@ Scenario: User that creates the Game Room should be assigned Moderator
 	When I request Game information from getPlayInfo
 	Then I should see that the moderator is connected
 
-Scenario: Moderator changes the title of a story
+Scenario: Moderator changes the title of a story before game starts
 	Given I log in via Quick Play as "John"
 	And I create a Game Room named "Test Room"
 	And I create a story named "Test Story"
@@ -37,6 +37,35 @@ Scenario: Moderator votes
 	And I vote
 	When I request Vote information
 	Then I should see that I have voted
+
+Scenario: Moderator submits an estimate
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I start the game
+	And I vote
+	And I Finish voting
+	When I request story estimate information
+	Then I should see that my estimate is 3
+
+Scenario: Moderator changes the title of a story after game starts
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I start the game
+	And I change the title of the story to "Modified Test Story"
+	When I request story information
+	Then I should see that the story is named "Modified Test Story"
+
+Scenario: Moderator changes the title of a story after he votes
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I start the game
+	And I vote
+	And I change the title of the story to "Modified Test Story"
+	When I request story information
+	Then I should see that the story is named "Modified Test Story"
 
 Scenario: Moderator skips a story
 	Given I log in via Quick Play as "John"
@@ -155,12 +184,20 @@ Scenario: Moderator tries to vote before the game has started
 	When I request Game information from getPlayInfo
 	Then I should see that there are no votes submitted
 
+Scenario: Moderator tries to vote in a game that has no stories
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I start the game
+	And I vote
+	When I request Game information from getPlayInfo
+	Then I should see that there are no votes submitted
+
 Scenario: Moderator tries to create a story in a room that does not allow story creation
 	Given I log in via Quick Play as "John"
 	And I create a Game Room named "Test Room" that cannot have stories
 	And I create a story named "Test Story"
 	When I request Game information from getPlayInfo
-	Then I should see that there are no stories in this room
+	Then I should see that there are no stories created
 
 Scenario: Moderator tries to skip stories before the game starts
 	Given I log in via Quick Play as "John"
@@ -168,6 +205,7 @@ Scenario: Moderator tries to skip stories before the game starts
 	And I create a story named "Test Story"
 	And I create a story named "Second Test Story"
 	And I skip the current story
+	And I start the game
 	When I request Current Story Information
 	Then I Should see that the Current Story is named "Test Story"
 
@@ -186,3 +224,20 @@ Scenario: Moderator tries to end the voting process before the game starts
 	And I Finish voting
 	When I request Game information from getPlayersAndState
 	Then I should see that the voting had not been ended
+
+Scenario: Moderator tries to send an estimate before the game starts
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I Finish voting
+	When I request story estimate information
+	Then I should see that my estimate is null
+
+Scenario: Moderator tries to send an estimate after the game starts, but without submitting a vote
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I start the game
+	And I Finish voting
+	When I request story estimate information
+	Then I should see that my estimate is null

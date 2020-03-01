@@ -56,6 +56,13 @@ namespace planITpoker_SpecFlow_testing.Steps
             stories.Vote();
         }
 
+        [Given(@"Jack submits an estimate")]
+        public void GivenJackSubmitsAnEstimate()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
+            stories.FinishVoting();
+        }
+
         [Given(@"Jack tries to skip the current story")]
         public void GivenJackTriesToSkipTheCurrentStory()
         {
@@ -96,7 +103,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         }
 
         [Given(@"Jack tries to end the voting process")]
-        public void GivenJackTriesToEndTheVotingProcess()
+        public void GivenJackTriesToEndTheVotingProcess()   //this is also used for sending estimates !!!
         {
             var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
             stories.FinishVoting();
@@ -153,6 +160,13 @@ namespace planITpoker_SpecFlow_testing.Steps
             currentStory = games.GetCurrentStoryInfo();
         }
 
+        [When(@"I request information about story estimates")]
+        public void WhenIRequestInformationAboutStoryEstimates()
+        {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
+            story = stories.GetStoryEstimateInfo();
+        }
+
         [Then(@"I should see that the second user's name is ""(.*)""")]
         public void ThenIShouldSeeThatTheSecondUserSNameIs(string userName)
         {
@@ -190,7 +204,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         }
 
         [Then(@"I should see that my vote is null")]
-        public void ThenIShouldSeeThatMyVoteIsNull()   //BUG FOUND!
+        public void ThenIShouldSeeThatMyVoteIsNull()   //BUG FOUND!  Second User is able to reveal cards after and before game starts
         {
             Assert.Null(user.players[0].vote);
             //since that the first user did not vote; normally his "vote" value should have been null
@@ -213,6 +227,18 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void ThenIShouldSeeThatTheStoryNameIsStill(string storyTitle)
         {
             Assert.Equal(storyTitle, story.stories[0].title);
+        }
+
+        [Then(@"I should see that Jack has no estimate submitted")]
+        public void ThenIShouldSeeThatJackHasNoEstimateSubmitted()
+        {
+            Assert.Null(story.stories[0].estimate);
+        }
+
+        [Then(@"I should see that there are no stories in this room")]
+        public void ThenIShouldSeeThatThereAreNoStoriesInThisRoom()
+        {
+            Assert.False(room.storiesCreated);
         }
     }
 }

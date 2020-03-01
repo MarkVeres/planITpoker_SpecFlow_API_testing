@@ -53,6 +53,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I change the title of the story to ""(.*)""")]
         public void GivenIChangeTheTitleOfTheStoryTo(string newStoryTitle)
         {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             stories.GetStoryEditInfo();
             stories.UpdateStoryName(newStoryTitle);
         }
@@ -88,6 +89,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         [Given(@"I Finish voting")]
         public void GivenIFinishVoting()
         {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             stories.FinishVoting();
         }
 
@@ -146,6 +148,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         [When(@"I request story information")]
         public void WhenIRequestStoryInformation()
         {
+            var stories = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             story = stories.GetStoryInformation();
         }
 
@@ -229,6 +232,12 @@ namespace planITpoker_SpecFlow_testing.Steps
             Assert.True(user.closed);
         }
 
+        [Then(@"I should see that my estimate is (.*)")]
+        public void ThenIShouldSeeThatMyEstimateIs(int num)
+        {
+            Assert.Equal(num, story.stories[0].estimate);
+        }
+
         [Then(@"I Should see that the Current Story is named ""(.*)""")]
         public void ThenIShouldSeeThatTheCurrentStoryIsNamed(string storyTitle)
         {
@@ -260,8 +269,10 @@ namespace planITpoker_SpecFlow_testing.Steps
         }
 
         [Then(@"I should see that there are no stories created")]
-        public void ThenIShouldSeeThatThereAreNoStoriesCreated()
+        public void ThenIShouldSeeThatThereAreNoStoriesCreated()   //BUG FOUND! moderator can create a story in a room that does not allow story creation
         {
+            //Assert.False(room.haveStories);   //this assert passes which means the room does not allow story creation
+            //however, it seems that through API calls, a moderator can add stories even though the room does not allow it
             Assert.False(story.storiesCreated);
         }
 
@@ -288,15 +299,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void ThenIShouldSeeThatIHaveNotVoted()
         {
             Assert.Null(room.votes);
-        }
-
-        [Then(@"I should see that there are no stories in this room")]
-        public void ThenIShouldSeeThatThereAreNoStoriesInThisRoom()
-        {
-            //BUG FOUND! 
-            //Assert.False(room.haveStories);   //this assert passes which means the room does not allow story creation
-            Assert.False(room.storiesCreated);  //however, it seems that through API calls, a moderator can add stories even though the room does not allow it    
-        }
+        }        
 
         [Then(@"I should see that my vote is still null")]
         public void ThenIShouldSeeThatMyVoteIsStillNull()
@@ -308,6 +311,12 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void ThenIShouldSeeThatTheVotingHadNotBeenEnded()
         {
             Assert.False(user.closed);
+        }
+
+        [Then(@"I should see that my estimate is null")]
+        public void ThenIShouldSeeThatMyEstimateIsNull()
+        {
+            Assert.Null(story.stories[0].estimate);
         }
     }
 }
