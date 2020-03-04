@@ -13,6 +13,8 @@ namespace planITpoker_SpecFlow_testing.Methods
         private readonly string cookie;
         private readonly RestClient client;
         public int GameId;
+        public int moderatorId;
+        public int secondUserId;
 
         public Games(LoginContext loginContext, RestClient client, string cookie)
         {
@@ -227,6 +229,73 @@ namespace planITpoker_SpecFlow_testing.Methods
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
 
             return deserializeObject;
+        }
+
+        public void GetFirstUserId()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/getPlayersAndState/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
+
+            moderatorId = deserializeObject.players[0].id;
+        }
+
+        public void GetSecondUserId()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/getPlayersAndState/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
+
+            secondUserId = deserializeObject.players[1].id;
+        }
+
+        public void ChangeRoleModeratorToObserver()
+        {
+            var body = $"gameId={GameId}&" + 
+                $"&userId={moderatorId}" + 
+                $"&role=1";
+
+            var request = new RestRequest("/api/games/updaterole/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+        }
+
+        public void RemovePlayer()
+        {
+            var body = $"gameId={GameId}" +
+                $"&userId={secondUserId}";
+
+            var request = new RestRequest("/api/games/removePlayer/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
         }
 
         public User GetVoteInformation()

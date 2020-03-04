@@ -35,6 +35,14 @@ namespace planITpoker_SpecFlow_testing.Steps
             aux.GetInGameRoom();
         }
 
+        [Given(@"I remove Jack from the game room")]
+        public void GivenIRemoveJackFromTheGameRoom()
+        {
+            var games = new Games(loginContext, client, loginContext.cookie);
+            games.GetSecondUserId();
+            games.RemovePlayer();
+        }
+
         [Given(@"Jack creates a story named ""(.*)""")]
         public void GivenJackCreatesAStory(string storyTitle)
         {
@@ -239,6 +247,12 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void ThenIShouldSeeThatThereAreNoStoriesInThisRoom()
         {
             Assert.False(room.storiesCreated);
+        }
+
+        [Then(@"I should see that there is only (.*) user in the room")]
+        public void ThenIShouldSeeThatThereIsOnlyUserInTheRoom(int num)
+        {
+            Assert.Equal(num, room.playersCount);
         }
     }
 }

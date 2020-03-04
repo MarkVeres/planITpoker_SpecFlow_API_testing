@@ -18,5 +18,6 @@ namespace planITpoker_SpecFlow_testing.Methods
         public bool gameStarted { get; set; }
         public int? votes { get; set; }   //are there any votes submitted?
         public bool storiesCreated { get; set; }
+        public int? playersCount { get; set; }  //how many players are in the game room
     }
 }

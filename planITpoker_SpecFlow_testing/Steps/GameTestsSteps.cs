@@ -42,7 +42,15 @@ namespace planITpoker_SpecFlow_testing.Steps
             var games = new Games(loginContext, client, loginContext.cookie);
             games.CreateRoom(roomName);
         }
-        
+
+        [Given(@"I change my role to observer")]
+        public void GivenIChangeMyRoleToObserver()
+        {
+            var games = new Games(loginContext, client, loginContext.cookie);
+            games.GetFirstUserId();
+            games.ChangeRoleModeratorToObserver();
+        }
+
         [Given(@"I create a story named ""(.*)""")]
         public void GivenICreateAStoryNamed(string storyName)
         {
@@ -250,7 +258,7 @@ namespace planITpoker_SpecFlow_testing.Steps
             Assert.False(user.players[0].voted);
         }
 
-        [Then(@"I Should see that the vote values is (.*)")]
+        [Then(@"I Should see that the vote value is (.*)")]
         public void ThenIShouldSeeThatTheVoteValuesIs(int voteValue)
         {
             Assert.Equal(-1, user.players[0].vote);
@@ -317,6 +325,18 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void ThenIShouldSeeThatMyEstimateIsNull()
         {
             Assert.Null(story.stories[0].estimate);
+        }
+
+        [Then(@"I Should see that the vote value is not (.*)")]
+        public void ThenIShouldSeeThatTheVoteValueIsNot(int p0)
+        {
+            Assert.False(-1 == user.players[0].vote);
+        }
+
+        [Then(@"I should see that my role has been changed to observer")]
+        public void ThenIShouldSeeThatMyRoleHasBeenChangedToObserver()
+        {
+            Assert.Equal(5, user.players[0].inGameRole);
         }
     }
 }

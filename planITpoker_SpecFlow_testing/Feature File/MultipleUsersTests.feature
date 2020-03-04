@@ -7,6 +7,14 @@ Scenario: A second user joins the Game Room
 	When I ask for information from getPlayersAndState
 	Then I should see that the second user's name is "Jack"
 
+Scenario: Moderator removes second user from the room
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And a second user logs into the same Game Room as "Jack"
+	And I remove Jack from the game room
+	When I request Room information from GetPlayInfo
+	Then I should see that there is only 1 user in the room
+
 Scenario: Second user tries to create a story
 	Given I log in via Quick Play as "John"
 	And I create a Game Room named "Test Room"

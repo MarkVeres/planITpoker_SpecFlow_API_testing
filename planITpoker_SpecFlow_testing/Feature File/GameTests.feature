@@ -94,7 +94,7 @@ Scenario: Moderator Reveals cards
 	And I start the game
 	And I reveal the cards
 	When I request Vote information
-	Then I Should see that the vote values is -1
+	Then I Should see that the vote value is -1
 
 Scenario: Moderator clears votes before voting step ends
 	Given I log in via Quick Play as "John"
@@ -217,6 +217,16 @@ Scenario: Moderator tries to reveal votes before games starts
 	When I request player information from getPlayInfo
 	Then I should see that my vote is still null
 
+Scenario: Moderator tries to reveal votes after voting
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I start the game
+	And I vote
+	And I reveal the cards	
+	When I request player information from getPlayInfo
+	Then I Should see that the vote value is not -1
+
 Scenario: Moderator tries to end the voting process before the game starts
 	Given I log in via Quick Play as "John"
 	And I create a Game Room named "Test Room"
@@ -241,3 +251,27 @@ Scenario: Moderator tries to send an estimate after the game starts, but without
 	And I Finish voting
 	When I request story estimate information
 	Then I should see that my estimate is null
+
+Scenario: Moderator changes his role from player to observer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I change my role to observer
+	When I request Game information from getPlayersAndState
+	Then I should see that my role has been changed to observer
+
+Scenario: Moderator tries to add a story while in the role of observer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I change my role to observer
+	And I create a story named "Test Story"
+	When I request story information
+	Then I should see that there are no stories created
+
+Scenario: Moderator tries to start the game while in the role of observer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I change my role to observer
+	And I start the game
+	When I request Game information from getPlayersAndState
+	Then I should see that the game has started

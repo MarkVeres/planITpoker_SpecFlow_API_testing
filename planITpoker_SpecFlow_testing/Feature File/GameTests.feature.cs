@@ -637,7 +637,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("I request Vote information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 97
- testRunner.Then("I Should see that the vote values is -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I Should see that the vote value is -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1332,13 +1332,13 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Moderator tries to end the voting process before the game starts")]
+        [Xunit.SkippableFactAttribute(DisplayName="Moderator tries to reveal votes after voting")]
         [Xunit.TraitAttribute("FeatureTitle", "GameTests")]
-        [Xunit.TraitAttribute("Description", "Moderator tries to end the voting process before the game starts")]
-        public virtual void ModeratorTriesToEndTheVotingProcessBeforeTheGameStarts()
+        [Xunit.TraitAttribute("Description", "Moderator tries to reveal votes after voting")]
+        public virtual void ModeratorTriesToRevealVotesAfterVoting()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moderator tries to end the voting process before the game starts", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moderator tries to reveal votes after voting", null, ((string[])(null)));
 #line 220
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1369,26 +1369,32 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("I create a story named \"Test Story\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 224
- testRunner.And("I Finish voting", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I start the game", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 225
- testRunner.When("I request Game information from getPlayersAndState", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I vote", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 226
- testRunner.Then("I should see that the voting had not been ended", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I reveal the cards", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 227
+ testRunner.When("I request player information from getPlayInfo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 228
+ testRunner.Then("I Should see that the vote value is not -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Moderator tries to send an estimate before the game starts")]
+        [Xunit.SkippableFactAttribute(DisplayName="Moderator tries to end the voting process before the game starts")]
         [Xunit.TraitAttribute("FeatureTitle", "GameTests")]
-        [Xunit.TraitAttribute("Description", "Moderator tries to send an estimate before the game starts")]
-        public virtual void ModeratorTriesToSendAnEstimateBeforeTheGameStarts()
+        [Xunit.TraitAttribute("Description", "Moderator tries to end the voting process before the game starts")]
+        public virtual void ModeratorTriesToEndTheVotingProcessBeforeTheGameStarts()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moderator tries to send an estimate before the game starts", null, ((string[])(null)));
-#line 228
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moderator tries to end the voting process before the game starts", null, ((string[])(null)));
+#line 230
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1408,22 +1414,71 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 229
+#line 231
  testRunner.Given("I log in via Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 230
+#line 232
  testRunner.And("I create a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 231
+#line 233
  testRunner.And("I create a story named \"Test Story\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 232
+#line 234
  testRunner.And("I Finish voting", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 233
+#line 235
+ testRunner.When("I request Game information from getPlayersAndState", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 236
+ testRunner.Then("I should see that the voting had not been ended", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Moderator tries to send an estimate before the game starts")]
+        [Xunit.TraitAttribute("FeatureTitle", "GameTests")]
+        [Xunit.TraitAttribute("Description", "Moderator tries to send an estimate before the game starts")]
+        public virtual void ModeratorTriesToSendAnEstimateBeforeTheGameStarts()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moderator tries to send an estimate before the game starts", null, ((string[])(null)));
+#line 238
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 239
+ testRunner.Given("I log in via Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 240
+ testRunner.And("I create a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 241
+ testRunner.And("I create a story named \"Test Story\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 242
+ testRunner.And("I Finish voting", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 243
  testRunner.When("I request story estimate information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 234
+#line 244
  testRunner.Then("I should see that my estimate is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1440,7 +1495,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moderator tries to send an estimate after the game starts, but without submitting" +
                     " a vote", null, ((string[])(null)));
-#line 236
+#line 246
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1460,26 +1515,173 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 237
+#line 247
  testRunner.Given("I log in via Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 238
+#line 248
  testRunner.And("I create a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 239
+#line 249
  testRunner.And("I create a story named \"Test Story\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 240
+#line 250
  testRunner.And("I start the game", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 241
+#line 251
  testRunner.And("I Finish voting", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 242
+#line 252
  testRunner.When("I request story estimate information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 243
+#line 253
  testRunner.Then("I should see that my estimate is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Moderator changes his role from player to observer")]
+        [Xunit.TraitAttribute("FeatureTitle", "GameTests")]
+        [Xunit.TraitAttribute("Description", "Moderator changes his role from player to observer")]
+        public virtual void ModeratorChangesHisRoleFromPlayerToObserver()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moderator changes his role from player to observer", null, ((string[])(null)));
+#line 255
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 256
+ testRunner.Given("I log in via Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 257
+ testRunner.And("I create a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 258
+ testRunner.And("I change my role to observer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 259
+ testRunner.When("I request Game information from getPlayersAndState", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 260
+ testRunner.Then("I should see that my role has been changed to observer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Moderator tries to add a story while in the role of observer")]
+        [Xunit.TraitAttribute("FeatureTitle", "GameTests")]
+        [Xunit.TraitAttribute("Description", "Moderator tries to add a story while in the role of observer")]
+        public virtual void ModeratorTriesToAddAStoryWhileInTheRoleOfObserver()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moderator tries to add a story while in the role of observer", null, ((string[])(null)));
+#line 262
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 263
+ testRunner.Given("I log in via Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 264
+ testRunner.And("I create a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 265
+ testRunner.And("I change my role to observer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 266
+ testRunner.And("I create a story named \"Test Story\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 267
+ testRunner.When("I request story information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 268
+ testRunner.Then("I should see that there are no stories created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Moderator tries to start the game while in the role of observer")]
+        [Xunit.TraitAttribute("FeatureTitle", "GameTests")]
+        [Xunit.TraitAttribute("Description", "Moderator tries to start the game while in the role of observer")]
+        public virtual void ModeratorTriesToStartTheGameWhileInTheRoleOfObserver()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moderator tries to start the game while in the role of observer", null, ((string[])(null)));
+#line 270
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 271
+ testRunner.Given("I log in via Quick Play as \"John\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 272
+ testRunner.And("I create a Game Room named \"Test Room\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 273
+ testRunner.And("I create a story named \"Test Story\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 274
+ testRunner.And("I change my role to observer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 275
+ testRunner.And("I start the game", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 276
+ testRunner.When("I request Game information from getPlayersAndState", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 277
+ testRunner.Then("I should see that the game has started", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
