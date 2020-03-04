@@ -125,6 +125,14 @@ namespace planITpoker_SpecFlow_testing.Steps
             stories.UpdateStoryName(newStoryTitle);
         }
 
+        [Given(@"I assign Jack as observer")]
+        public void GivenIAssignJackAsObserver()
+        {
+            var games = new Games(loginContext, client, loginContext.cookie);
+            games.GetSecondUserId();
+            games.ChangeRolePlayerToObserver();
+        }
+
         [When(@"I set the second timer")]
         public void WhenISetTheSecondTimer()
         {
@@ -253,6 +261,19 @@ namespace planITpoker_SpecFlow_testing.Steps
         public void ThenIShouldSeeThatThereIsOnlyUserInTheRoom(int num)
         {
             Assert.Equal(num, room.playersCount);
+        }
+
+        [Then(@"I should see that Jack has the role of observer")]
+        public void ThenIShouldSeeThatJackHasTheRoleOfObserver()
+        {
+            Assert.Equal(1, user.players[1].inGameRole);
+            //check comments in User.cs for inGameRole disambiguation
+        }
+
+        [Then(@"I should see that there are nobody has voted")]
+        public void ThenIShouldSeeThatThereAreNobodyHasVoted()
+        {
+            Assert.Null(room.votes);
         }
     }
 }

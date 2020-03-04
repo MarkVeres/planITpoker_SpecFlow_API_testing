@@ -267,11 +267,22 @@ Scenario: Moderator tries to add a story while in the role of observer
 	When I request story information
 	Then I should see that there are no stories created
 
-Scenario: Moderator tries to start the game while in the role of observer
+Scenario: Moderator tries to vote while in the role of observer
 	Given I log in via Quick Play as "John"
 	And I create a Game Room named "Test Room"
 	And I create a story named "Test Story"
 	And I change my role to observer
 	And I start the game
-	When I request Game information from getPlayersAndState
-	Then I should see that the game has started
+	And I vote
+	When I request Vote information
+	Then I should see that my vote is still null
+
+Scenario: Moderator tries to send an estimate, without having submitted a vote, while in the role of observer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And I change my role to observer
+	And I start the game
+	And I Finish voting
+	When I request story estimate information
+	Then I should see that my estimate is 3

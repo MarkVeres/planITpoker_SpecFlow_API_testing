@@ -283,6 +283,22 @@ namespace planITpoker_SpecFlow_testing.Methods
             var response = client.Execute(request);
         }
 
+        public void ChangeRolePlayerToObserver()
+        {
+            var body = $"gameId={GameId}&" +
+                $"&userId={secondUserId}" +
+                $"&role=1";
+
+            var request = new RestRequest("/api/games/updaterole/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+        }
+
         public void RemovePlayer()
         {
             var body = $"gameId={GameId}" +

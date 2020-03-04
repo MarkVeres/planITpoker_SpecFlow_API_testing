@@ -310,9 +310,10 @@ namespace planITpoker_SpecFlow_testing.Steps
         }        
 
         [Then(@"I should see that my vote is still null")]
-        public void ThenIShouldSeeThatMyVoteIsStillNull()
+        public void ThenIShouldSeeThatMyVoteIsStillNull()  //BUG FOUND !
         {
             Assert.Null(user.players[0].vote);
+            //Moderator tries to vote while in the role of observer bug; observer should not be able to vote but is able
         }
 
         [Then(@"I should see that the voting had not been ended")]

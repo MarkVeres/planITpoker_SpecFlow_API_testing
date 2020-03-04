@@ -13,7 +13,9 @@ namespace planITpoker_SpecFlow_testing.Models
         public bool closed { get; set; }       //this is for Finish voting
         public int? vote { get; set; }        //this is for the value of the vote
         public int id { get; set; }    //this is the player's ID
-        public int? inGameRole { get; set; }   //apparently, "5" is the role of Observer and "6" is the role of Moderator
-                                               //player role is "2"
+        public int? inGameRole { get; set; }   //inGameRole parameter changes depending on the order of the users
+                                               //example: if the first user is observer he will have the role value "5", 
+                                               //if the second user is observer he will have the role value "1"
+                                               //always check manually for inGameRole values
     }
 }

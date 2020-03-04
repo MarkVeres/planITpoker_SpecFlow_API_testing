@@ -210,3 +210,40 @@ Scenario: Second user tries to send an estimate after the game has started, but 
 	And Jack tries to end the voting process
 	When I request information about story estimates
 	Then I should see that Jack has no estimate submitted
+
+Scenario: Moderator assigns second user as observer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And a second user logs into the same Game Room as "Jack"
+	And I assign Jack as observer
+	When I ask for information from getPlayersAndState
+	Then I should see that Jack has the role of observer
+
+Scenario: Second User tries to create story, as observer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And a second user logs into the same Game Room as "Jack"
+	And I assign Jack as observer
+	And Jack creates a story named "New User Story"
+	When I request Room information from GetPlayInfo
+	Then I should see that there are no stories in this room
+
+Scenario: Second User tries to start the game, as observer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And a second user logs into the same Game Room as "Jack"
+	And I assign Jack as observer
+	And Jack tries to start the game
+	When I request Room information from GetPlayInfo
+	Then I Should see that Jack was unable to start the game
+
+Scenario: Second user tries to vote, as observer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I create a story named "Test Story"
+	And a second user logs into the same Game Room as "Jack"
+	And I assign Jack as observer
+	And I start the game
+	And Jack votes
+	When I request Room information from GetPlayInfo
+	Then I should see that there are nobody has voted
