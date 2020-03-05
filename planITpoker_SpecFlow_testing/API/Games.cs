@@ -382,14 +382,14 @@ namespace planITpoker_SpecFlow_testing.Methods
         public void EditCreatedGameRoom(string roomName, bool tf, int duration)
         {
             var body = $"name={roomName}" +
-                $"&cardSetType=1" +
-                $"&haveStories=true" +
-                $"&confirmSkip=true" +
-                $"&showVotingToObservers=true" +
-                $"&autoReveal=true" +
-                $"&changeVote=false" +
-                $"&countdownTimer={tf}" +
-                $"&countdownTimerValue={duration}";
+                 $"&cardSetType=1" +
+                 $"&haveStories=true" +
+                 $"&confirmSkip=true" +
+                 $"&showVotingToObservers=true" +
+                 $"&autoReveal=true" +
+                 $"&changeVote=false" +
+                 $"&countdownTimer={tf}" +
+                 $"&countdownTimerValue={duration}";
             var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());

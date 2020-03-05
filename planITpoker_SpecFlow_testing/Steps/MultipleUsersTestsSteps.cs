@@ -4,6 +4,7 @@ using planITpoker_SpecFlow_testing.Methods;
 using planITpoker_SpecFlow_testing.Models;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -19,6 +20,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         public Story story;
         public Room room;
         public CurrentStory currentStory;
+        public List<ListRoom> listRoom;
         private string initialTimer, secondTimer;
 
         public MultipleUsersTestsSteps(LoginContext loginContext)
@@ -41,6 +43,20 @@ namespace planITpoker_SpecFlow_testing.Steps
             var games = new Games(loginContext, client, loginContext.cookie);
             games.GetSecondUserId();
             games.RemovePlayer();
+        }
+
+        [Given(@"Second user reconnects to the game room")]
+        public void GivenSecondUserReconnectsToTheGameRoom()
+        {
+            var aux = new AuxiliaryAPIs(loginContext.gameId, loginContext.gameCode, client, loginContext.secondUserCookie);
+            aux.GetInGameRoom();
+        }
+
+        [Given(@"Jack tries to edit the Game Room by adding a countdown timer")]
+        public void GivenJackTriesToEditTheGameRoomByAddingACountdownTimer()
+        {
+            var games = new Games(loginContext, client, loginContext.secondUserCookie);
+            games.EditCreatedGameRoom("Test Room", true, 30);
         }
 
         [Given(@"Jack creates a story named ""(.*)""")]
@@ -183,6 +199,13 @@ namespace planITpoker_SpecFlow_testing.Steps
             story = stories.GetStoryEstimateInfo();
         }
 
+        [When(@"I request information from getRoomList")]
+        public void WhenIRequestInformationFromGetRoomList()
+        {
+            var list = new Games(loginContext, client, loginContext.cookie);
+            listRoom = list.GetGamesListInfo();
+        }
+
         [Then(@"I should see that the second user's name is ""(.*)""")]
         public void ThenIShouldSeeThatTheSecondUserSNameIs(string userName)
         {
@@ -220,7 +243,7 @@ namespace planITpoker_SpecFlow_testing.Steps
         }
 
         [Then(@"I should see that my vote is null")]
-        public void ThenIShouldSeeThatMyVoteIsNull()   //BUG FOUND!  Second User is able to reveal cards after and before game starts
+        public void ThenIShouldSeeThatMyVoteIsNull()   //BUG FOUND!  Second User is able to reveal cards before and after game starts
         {
             Assert.Null(user.players[0].vote);
             //since that the first user did not vote; normally his "vote" value should have been null
@@ -270,10 +293,16 @@ namespace planITpoker_SpecFlow_testing.Steps
             //check comments in User.cs for inGameRole disambiguation
         }
 
-        [Then(@"I should see that there are nobody has voted")]
-        public void ThenIShouldSeeThatThereAreNobodyHasVoted()
+        [Then(@"I should see that nobody has voted")]
+        public void ThenIShouldSeeThatNobodyHasVoted()
         {
             Assert.Null(room.votes);
+        }
+
+        [Then(@"I should see that the room does not have a countdown timer")]
+        public void ThenIShouldSeeThatTheRoomDoesNotHaveACountdownTimer()
+        {
+            Assert.False(listRoom[0].countdownTimer);
         }
     }
 }

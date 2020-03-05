@@ -43,6 +43,13 @@ namespace planITpoker_SpecFlow_testing.Steps
             games.CreateRoom(roomName);
         }
 
+        [Given(@"I edit the Game Room to have a countdown timer")]
+        public void GivenIEditTheGameRoomToHaveACountdownTimer()
+        {
+            var games = new Games(loginContext, client, loginContext.cookie);
+            games.EditCreatedGameRoom("Test Room", true, 30);
+        }
+
         [Given(@"I change my role to observer")]
         public void GivenIChangeMyRoleToObserver()
         {
@@ -144,7 +151,7 @@ namespace planITpoker_SpecFlow_testing.Steps
             var changeEstimate = new Stories(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             changeEstimate.GetStoryEstimateEditInfo();
             changeEstimate.UpdateStoryEstimate(5);
-        }
+        }        
 
         [When(@"I request information from getStoryState")]
         public void WhenIRequestInformationFromGetStoryState()

@@ -80,18 +80,18 @@ namespace planITpoker_SpecFlow_testing.Steps
             reset.ResetGameRoom();
         }
 
-        [Given(@"I modify Game Room setting by adding a countdown timer")]
-        public void GivenIModifyGameRoomSettingByAddingACountdownTimer()
-        {
-            var modify = new Games(loginContext, client, loginContext.cookie);
-            modify.EditCreatedGameRoom("Test Room", true, 30);
-        }
-
         [Given(@"I delete the Game Room")]
         public void GivenIDeleteTheGameRoom()
         {
             var delete = new Games(loginContext, client, loginContext.cookie);
             delete.DeleteGameRoom();
+        }
+
+        [Given(@"I modify Game Room setting by adding a countdown timer")]
+        public void GivenIModifyGameRoomSettingByAddingACountdownTimer()
+        {
+            var modify = new Games(loginContext, client, loginContext.cookie);
+            modify.EditCreatedGameRoom("Test Room", true, 30);
         }
 
         [When(@"I request information regarding the Game Room")]
@@ -100,7 +100,6 @@ namespace planITpoker_SpecFlow_testing.Steps
             var game = new Play(loginContext.gameId, loginContext.gameCode, client, loginContext.cookie);
             room = game.GetRoomInfo();
         }
-
 
         [When(@"I request Room List information")]
         public void WhenIRequestRoomListInformation()

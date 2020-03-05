@@ -209,7 +209,7 @@ Scenario: Moderator tries to skip stories before the game starts
 	When I request Current Story Information
 	Then I Should see that the Current Story is named "Test Story"
 
-Scenario: Moderator tries to reveal votes before games starts
+Scenario: Moderator tries to reveal votes before game starts
 	Given I log in via Quick Play as "John"
 	And I create a Game Room named "Test Room"
 	And I create a story named "Test Story"
@@ -286,3 +286,11 @@ Scenario: Moderator tries to send an estimate, without having submitted a vote, 
 	And I Finish voting
 	When I request story estimate information
 	Then I should see that my estimate is 3
+
+Scenario: Moderator tries to edit the game room to add a countdown timer, as observer
+	Given I log in via Quick Play as "John"
+	And I create a Game Room named "Test Room"
+	And I change my role to observer
+	And I edit the Game Room to have a countdown timer
+	When I request Room List information
+	Then I should see that now, my Room has a countdown timer
